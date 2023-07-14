@@ -19,7 +19,6 @@ kubectl create -f https://raw.githubusercontent.com/apache/flink-kubernetes-oper
 kubectl logs -f deploy/basic-example
 #如果需要添加8081端口查看作业
 kubectl apply -f service.yaml
-
 ```
 
 ```yaml
