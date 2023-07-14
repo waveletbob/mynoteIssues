@@ -12,11 +12,11 @@ Welcome to notes-dev's documentation!
    :maxdepth: 1
    :caption: Contents
 
-   devops/k8s.md
-   技术栈/flink.md
-   架构/云原生.md
+   devops/index.rst
+   技术栈/index.rst
+   架构/index.rst
    算法/index.md
-   读书/读书.md
+   读书/index.md
    面试/面试大纲.md
 
 Indices and tables
