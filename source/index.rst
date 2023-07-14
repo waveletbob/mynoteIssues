@@ -7,13 +7,10 @@ Welcome to notes-dev's documentation!
 =====================================
 
 .. toctree::
-<<<<<<< HEAD
    :maxdepth: 2
    :caption: Contents:
-=======
    :maxdepth: 1
    :caption: Contents
->>>>>>> f0d6bff (:tada: devops`)
 
    devops/k8s.md
    技术栈/flink.md
