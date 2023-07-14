@@ -1,0 +1,122 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    flinkdeployment.flink.apache.org/generation: "2"
+  creationTimestamp: "2023-05-23T10:00:11Z"
+  generateName: basic-example-78bf79576c-
+  labels:
+    app: basic-example
+    component: jobmanager
+    pod-template-hash: 78bf79576c
+    type: flink-native-kubernetes
+  name: basic-example-78bf79576c-f9xqj
+  namespace: default
+  ownerReferences:
+  - apiVersion: apps/v1
+    blockOwnerDeletion: true
+    controller: true
+    kind: ReplicaSet
+    name: basic-example-78bf79576c
+    uid: 06da3f33-4cfd-49ec-9c8a-8c41fc4dfac2
+  resourceVersion: "137017"
+  uid: 1c7eece4-63ef-4888-a95c-69bd8dcf76ac
+spec:
+  containers:
+  - args:
+    - bash
+    - -c
+    - 'kubernetes-jobmanager.sh kubernetes-application '
+    command:
+    - /docker-entrypoint.sh
+    env:
+    - name: _POD_IP_ADDRESS
+      valueFrom:
+        fieldRef:
+          apiVersion: v1
+          fieldPath: status.podIP
+    image: flink:1.16
+    imagePullPolicy: IfNotPresent
+    name: flink-main-container
+    ports:
+    - containerPort: 8081
+      name: rest
+      protocol: TCP
+    - containerPort: 6123
+      name: jobmanager-rpc
+      protocol: TCP
+    - containerPort: 6124
+      name: blobserver
+      protocol: TCP
+    resources:
+      limits:
+        cpu: "1"
+        memory: 200Mb
+      requests:
+        cpu: "1"
+        memory: 200Mb
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /opt/flink/conf
+      name: flink-config-volume
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-874zm
+      readOnly: true
+  dnsPolicy: ClusterFirst
+  enableServiceLinks: true
+  preemptionPolicy: PreemptLowerPriority
+  priority: 0
+  restartPolicy: Always
+  schedulerName: default-scheduler
+  securityContext: {}
+  serviceAccount: flink
+  serviceAccountName: flink
+  terminationGracePeriodSeconds: 30
+  tolerations:
+  - effect: NoExecute
+    key: node.kubernetes.io/not-ready
+    operator: Exists
+    tolerationSeconds: 300
+  - effect: NoExecute
+    key: node.kubernetes.io/unreachable
+    operator: Exists
+    tolerationSeconds: 300
+  volumes:
+  - configMap:
+      defaultMode: 420
+      items:
+      - key: log4j-console.properties
+        path: log4j-console.properties
+      - key: flink-conf.yaml
+        path: flink-conf.yaml
+      name: flink-config-basic-example
+    name: flink-config-volume
+  - name: kube-api-access-874zm
+    projected:
+      defaultMode: 420
+      sources:
+      - serviceAccountToken:
+          expirationSeconds: 3607
+          path: token
+      - configMap:
+          items:
+          - key: ca.crt
+            path: ca.crt
+          name: kube-root-ca.crt
+      - downwardAPI:
+          items:
+          - fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+            path: namespace
+status:
+  conditions:
+  - lastProbeTime: null
+    lastTransitionTime: "2023-05-23T10:00:11Z"
+    message: '0/1 nodes are available: 1 Insufficient memory.'
+    reason: Unschedulable
+    status: "False"
+    type: PodScheduled
+  phase: Pending
+  qosClass: Guaranteed

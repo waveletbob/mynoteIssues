@@ -1,0 +1,5 @@
+jobName: wordcount
+jarPath: /opt/flink/examples/wordcount.jar
+mainClass: org.apache.flink.examples.java.wordcount.WordCount
+parallelism: 1
+args: ["--input", "/opt/flink/examples/input.txt", "--output", "/opt/flink/examples/output"]

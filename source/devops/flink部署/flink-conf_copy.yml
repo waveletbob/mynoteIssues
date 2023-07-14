@@ -1,0 +1,106 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: flink-config
+#  namespace: szyx-flink
+  labels:
+    app: flink
+data:
+  flink-conf.yaml: |+
+    kubernetes.cluster-id: szyx-flink
+    # 所在的命名空间
+    kubernetes.namespace: szyx-flink
+    jobmanager.rpc.address: flink-jobmanager
+    taskmanager.numberOfTaskSlots: 2
+    blob.server.port: 6124
+    jobmanager.rpc.port: 6123
+    taskmanager.rpc.port: 6122
+    queryable-state.proxy.ports: 6125
+    jobmanager.memory.process.size: 1600m
+    taskmanager.memory.process.size: 2867m
+    parallelism.default: 2
+    # 文件系统
+    fs.default-scheme: s3
+    # minio地址
+    s3.endpoint: https://minio.k8s.io:9000
+    # minio的bucket
+    s3.flink.bucket: szyxflink
+    s3.access-key: <minio账号>
+    s3.secret-key: <minio密码>
+    # 状态存储格式
+    state.backend: rocksdb
+    s3.path.style.access: true
+    blob.storage.directory: /opt/flink/tmp/blob
+    web.upload.dir: /opt/flink/tmp/upload
+    io.tmp.dirs: /opt/flink/tmp
+    # 状态管理
+    # checkpoint存储地址
+    state.checkpoints.dir: s3://szyxflink/state/checkpoint
+    # savepoint存储地址
+    state.savepoints.dir: s3://szyxflink/state/savepoint
+    # checkpoint间隔
+    execution.checkpointing.interval: 5000
+    execution.checkpointing.mode: EXACTLY_ONCE
+    # checkpoint保留数量
+    state.checkpoints.num-retained: 3
+    # history-server# 监视以下目录中已完成的作业
+    jobmanager.archive.fs.dir: s3://szyxflink/completed-jobs
+    # 每 10 秒刷新一次
+    historyserver.archive.fs.refresh-interval: 10000
+    historyserver.archive.fs.dir: s3://szyxflink/completed-jobs
+    # 高可用
+    high-availability: org.apache.flink.kubernetes.highavailability.KubernetesHaServicesFactory
+    high-availability.storageDir: s3://szyxflink/ha
+    # 每6个小时触发一次savepoint
+    kubernetes.operator.periodic.savepoint.interval: 6h
+    kubernetes.operator.savepoint.history.max.age: 24h
+    kubernetes.operator.savepoint.history.max.count: 5
+    # Restart of unhealthy job deployments
+    kubernetes.operator.cluster.health-check.enabled: true
+    # Restart failed job deployments 
+    kubernetes.operator.job.restart.failed: true
+  log4j-console.properties: |+
+    # This affects logging for both user code and Flink
+    rootLogger.level = INFO
+    rootLogger.appenderRef.console.ref = ConsoleAppender
+    rootLogger.appenderRef.rolling.ref = RollingFileAppender
+
+    # Uncomment this if you want to _only_ change Flink's logging
+    #logger.flink.name = org.apache.flink
+    #logger.flink.level = INFO
+
+    # The following lines keep the log level of common libraries/connectors on
+    # log level INFO. The root logger does not override this. You have to manually
+    # change the log levels here.
+    logger.akka.name = akka
+    logger.akka.level = INFO
+    logger.kafka.name= org.apache.kafka
+    logger.kafka.level = INFO
+    logger.hadoop.name = org.apache.hadoop
+    logger.hadoop.level = INFO
+    logger.zookeeper.name = org.apache.zookeeper
+    logger.zookeeper.level = INFO
+
+    # Log all infos to the console
+    appender.console.name = ConsoleAppender
+    appender.console.type = CONSOLE
+    appender.console.layout.type = PatternLayout
+    appender.console.layout.pattern = %d{yyyy-MM-dd HH:mm:ss,SSS} %-5p %-60c %x - %m%n
+
+    # Log all infos in the given rolling file
+    appender.rolling.name = RollingFileAppender
+    appender.rolling.type = RollingFile
+    appender.rolling.append = false
+    appender.rolling.fileName = ${sys:log.file}
+    appender.rolling.filePattern = ${sys:log.file}.%i
+    appender.rolling.layout.type = PatternLayout
+    appender.rolling.layout.pattern = %d{yyyy-MM-dd HH:mm:ss,SSS} %-5p %-60c %x - %m%n
+    appender.rolling.policies.type = Policies
+    appender.rolling.policies.size.type = SizeBasedTriggeringPolicy
+    appender.rolling.policies.size.size=100MB
+    appender.rolling.strategy.type = DefaultRolloverStrategy
+    appender.rolling.strategy.max = 10
+
+    # Suppress the irrelevant (wrong) warnings from the Netty channel handler
+    logger.netty.name = org.jboss.netty.channel.DefaultChannelPipeline
+    logger.netty.level = OFF

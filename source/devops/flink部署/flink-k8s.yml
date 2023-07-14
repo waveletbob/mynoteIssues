@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flink-cluster
+spec:
+  selector:
+    matchLabels:
+      app: flink
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: flink
+    spec:
+      containers:
+        - name: jobmanager
+          image: flink:1.14.6
+          command:
+            - /opt/flink/bin/jobmanager.sh
+          env:
+            - name: JOB_MANAGER_RPC_ADDRESS
+              valueFrom:
+                configMapKeyRef:
+                  name: flink-conf
+                  key: jobmanager.rpc.address
+          ports:
+            - containerPort: 6123
+        - name: taskmanager
+          image: flink:1.14.6
+          command:
+            - /opt/flink/bin/taskmanager.sh
+          env:
+            - name: JOB_MANAGER_RPC_ADDRESS
+              valueFrom:
+                configMapKeyRef:
+                  name: flink-conf
+                  key: jobmanager.rpc.address
+            - name: FLINK_TM_HEAP_SIZE
+              valueFrom:
+                configMapKeyRef:
+                  name: flink-conf
+                  key: taskmanager.heap.size
+          ports:
+            - containerPort: 6121
