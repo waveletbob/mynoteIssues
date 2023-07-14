@@ -3,12 +3,14 @@
 # For the full list of built-in configuration values, see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
+import os
+import sys
+
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 import sphinx_rtd_theme
-import recommonmark
 from recommonmark.parser import CommonMarkParser
-from recommonmark.transform import AutoStructify
+
 # -*- coding: utf-8 -*-
 #
 # Recommonmark documentation build configuration file, created by
@@ -22,10 +24,6 @@ from recommonmark.transform import AutoStructify
 #
 # All configuration values have a default; values that are commented out
 # serve to show the default.
-
-import sys
-import os
-import shlex
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -57,6 +55,15 @@ language = 'zh_CN'
 html_theme = "sphinx_rtd_theme"
 # html_static_path = ['_static']
 html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
+templates_path = ['_templates']
+
+# 在这里添加 layout.html 的路径
+
+# from jinja2 import Environment, FileSystemLoader
+# env = Environment(loader=FileSystemLoader('_templates'))
+# appbuilder = env.get_template('layout.html')
+
+
 # -- General configuration ------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
@@ -70,10 +77,45 @@ extensions = [
     'sphinx.ext.napoleon',
     'sphinx.ext.mathjax',
     'recommonmark',
+    'sphinx.ext.intersphinx',
+    'sphinx.ext.todo',
+    'sphinx.ext.viewcode',
+    # 'sphinxcontrib.translator',
+    # 'sphinxcontrib.gitalk',
+    # 'sphinxcontrib.disqus'
 ]
+# Gitalk评论插件配置
+# gitalk_repo = 'waveletbob/mynoteIssues'
+# gitalk_client_id = '971d0173585143983526'
+# gitalk_client_secret = 'a1599e7f13dbbc11ecf5c74f4e9f196109272cfa'
+# gitalk_page_id = '{{ page.path }}'
+# html_context = {
+#     # "extra_navbar": "<script src='https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js'></script><link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.css'>",
+#     # "extra_body": "<div id='gitalk-container'></div><script>var gitalk = new Gitalk({clientID: '971d0173585143983526',clientSecret: 'a1599e7f13dbbc11ecf5c74f4e9f196109272cfa',repo: 'mynoteIssues',owner: 'waveletbob',admin: ['waveletbob'],id: window.location.pathname,});gitalk.render('gitalk-container');</script>"
+#     'display_github': False,
+#     'github_user': 'waveletbob',
+#     'github_repo': 'mynoteIssues',
+#     # 'github_token': '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',
+#     'gitalk_repository': 'mynoteIssues',
+#     'gitalk_client_id': '971d0173585143983526',
+#     'gitalk_client_secret': 'a1599e7f13dbbc11ecf5c74f4e9f196109272cfa',
+#
+# }
+html_context = {
+    'gittalk_client_id': '971d0173585143983526',
+    'gittalk_client_secret': 'a1599e7f13dbbc11ecf5c74f4e9f196109272cfa',
+}
 
-# Add any paths that contain templates here, relative to this directory.
-templates_path = ['_templates']
+# # 在文件底部添加以下内容（将 <dbuser> ，<dbpassword> ，和 <short_name> 替换为您的 Disqus 的账户名、密码以及 Disqus 帐户所在的站点的名称）。
+# disqus_shortname = 'waveletbob' # 您在Disqus网站上创建的站点的shortname
+# disqus_username = 'disqus_ZjX5asqZll' # 是你 Disqus 登录用户的用户名，格式是“login/user_name”，必须添加双引号
+# disqus_url_prefix = 'https://mynoteissues.readthedocs.io' # 填写您的ReadTheDocs链接
+#
+# # 还可以根据需要配置以下参数：
+# disqus_display_count = False # 将计数器从评论框中删除
+# disqus_public_key = '' # 使用Disqus API时填写
+# disqus_secret_key = '' # 使用Disqus API时填写
+# disqus_config = {'language': 'zh_CN'} # 配置Disqus插件的选项，例如语言设置
 
 # The encoding of source files.
 #source_encoding = 'utf-8-sig'
@@ -145,8 +187,8 @@ todo_include_todos = False
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
-#html_theme_options = {}
 
+html_theme_options={}
 # Add any paths that contain custom themes here, relative to this directory.
 #html_theme_path = []
 
@@ -316,8 +358,6 @@ texinfo_documents = [
 #texinfo_no_detailmenu = False
 
 # app setup hook
-
-
 def setup(app):
     app.add_config_value('recommonmark_config', {
         #'url_resolver': lambda url: github_doc_root + url,

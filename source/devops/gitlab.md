@@ -1,4 +1,5 @@
-## gialab简介
+# gitlab
+## gitlab简介
 gitlabCI提供以下功能：
 - GitLab Server 后端，提供仓库管理，CI/CD
 - GitLab Runner 执行器

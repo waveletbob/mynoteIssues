@@ -1,3 +1,5 @@
+# k8s
+
 ## 组件
 * kube-apiserver：Kubernetes API 服务器，提供 Kubernetes API 的访问和管理。
 
@@ -45,6 +47,9 @@
 
 * Jaeger：开源的分布式追踪系统，用于跟踪和分析应用程序的请求流程和性能指标。
 
+* Federation 提供跨可用区的集群
+
+
 ## 名词解释
 
 * namespace
@@ -54,3 +59,60 @@
 * Persistent Volumes
 * Node
 * ConfiMap
+
+## Flink on K8s
+[Flink on K8s](./FlinkonK8s.md)
+
+## 架构
+
+总体架构：
+![img.png](../_static/k8s_struct.png)
+
+
+## 开放接口
+
+按照常规分布式系统的基本设计理论，提供以下三类资源接口：
+
+- CRI(容器运行时接口)：提供计算资源
+
+- CNI(容器网络接口)：提供网络资源
+- CSI(容器存储接口)：提供存储资源
+
+## 资源对象
+
+- Pod
+- Node
+- Namespace
+- Service
+- Volume
+- PersistentVolume
+- Deployment
+- Secret
+- StatefulSet
+- DaemonSet
+- ServiceAccount
+- ReplicationController
+- ReplicaSet
+- Job
+- CronJob
+- SecurityContext
+- ResourceQuota
+- LimitRange
+- HorizontalPodAutoscaling
+- Ingress
+- ConfigMap
+- Label
+- CustomResourceDefinition
+- Role
+- ClusterRole
+
+
+ 
+
+
+
+
+
+
+
+
