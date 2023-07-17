@@ -9,8 +9,6 @@ Welcome to notes-dev's documentation!
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
-   :maxdepth: 1
-   :caption: Contents
 
    devops/index.rst
    技术栈/index.rst
