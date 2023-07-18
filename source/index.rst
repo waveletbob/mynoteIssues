@@ -10,12 +10,15 @@ Welcome to notes-dev's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   devops/index.rst
+   编程/index.rst
    技术栈/index.rst
+   前端/index.rst
+   devops/index.rst
    架构/index.rst
    算法/index.md
    读书/index.md
    面试/面试大纲.md
+
 
 Indices and tables
 ==================
