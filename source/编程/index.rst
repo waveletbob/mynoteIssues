@@ -13,6 +13,7 @@
    go.md
    java.md
    编程规范.md
+   python.md
 .. only::  subproject and html
 
    Indices
