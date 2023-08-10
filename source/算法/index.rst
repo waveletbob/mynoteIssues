@@ -12,6 +12,7 @@
    :caption: Contents
 
    算法.md
+   ai.md
 
 
 .. only::  subproject and html

@@ -44,10 +44,17 @@ cpu-缓存-内存-IO
     - exector
 
 
-## NIO
+## 网络编程
+* BIO/NIO/AIO
+* Netty
+  * Channel
+  ![img.png](img.png)
+  * ByteBuf
+  ![img_1.png](img_1.png)
+  * Codec
+* akka
+* rpc
 
-Netty\akka\rpc
-selector
 
 ## 基础框架
 

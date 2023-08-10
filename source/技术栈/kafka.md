@@ -3,9 +3,13 @@
 ## 安装
 
 ```bash
-$ mkdir -p /opt/bigdata/kafka
-$ cd /opt/bigdata/kafka
-$ kubectl create namespace bigdata
+docker pull wurstmeister/kafka
+docker network create kafka-net
+docker run -d --name=zookeeper --network=kafka-net -p 2181:2181 -e ZOOKEEPER_CLIENT_PORT=2181 wurstmeister/zookeeper
+docker run -d --name=kafka --network=kafka-net -p 9092:9092 -e KAFKA_ADVERTISED_HOST_NAME=<your-hostname> -e KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181 -e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://<your-hostname>:9092 wurstmeister/kafka
+docker exec -it kafka /bin/bash
+cd /opt/kafka_2.12-2.3.0/
+bin/kafka-server-start.sh config/server.properties
 
 ```
 ```yaml
