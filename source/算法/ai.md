@@ -3,6 +3,7 @@
 ## 概念
 * langchain
 * 微调：Freeze方法、P-Tuning方法和Lora方法
+* prompt
 
 
 ## NLP
@@ -24,6 +25,7 @@
 > 社区资料： [Hugging-Face](https://g.126.fm/01WwwzE)
 >
 > 词向量-Cbow/Skip-Gram
+> ![img_2.png](img_2.png)
 
 - ELMo-双向LSTM
 - GPT-Transformer(Pre-training + Fine-tuning)
@@ -52,7 +54,7 @@
 %cd /content/text-generation-webui
 !python server.py --share --chat --load-in-8bit --model /content/text-generation-webui/models/Llama-2-13b-chat-hf
 ```
-- GLM
+- ChatGLM
 - vicuna
 - 其他 ：
   - UniLM、
@@ -64,7 +66,6 @@
   - Electra
   - T5
   - MT-DNN
-  - ChatGLM-130B
   - PaLM2
 
 
@@ -89,7 +90,13 @@
 - AI图像
 - AICode
 - AI问答
-
+![img_3.png](img_3.png)
+![img_4.png](img_4.png)
+## 免费云计算
+- colab
+- Kaggle
+- Paperspace
+- SageMaker
 
 ## 会议
 ![img_1.png](img_1.png)
