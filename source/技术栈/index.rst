@@ -16,6 +16,7 @@
    框架大全.md
    grpc.md
    springboot.md
+   doris.md
 
 
 .. only::  subproject and html

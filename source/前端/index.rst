@@ -26,7 +26,7 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     vue.md
     react.md
-    Angular
+    angular.md
 UI
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     Ant Design
@@ -45,9 +45,9 @@ UI
 .. toctree::
    :maxdepth: 1
 
-   node
+   node/npm
 
-
+   yarn
 
 
 TypeScript

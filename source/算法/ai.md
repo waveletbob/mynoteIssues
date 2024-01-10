@@ -30,7 +30,7 @@
 - ELMo-双向LSTM
 - GPT-Transformer(Pre-training + Fine-tuning)
 - BERT-Mask Language Model（MLM）/Next Sentence Prediction（NSP）
-  ![img.png](img.png)
+  ![img.png](img.png)<!-- @IGNORE PREVIOUS: link -->
 - Llama2
 ```bash
 #colab执行
@@ -68,9 +68,14 @@
   - MT-DNN
   - PaLM2
 
+### 服务架构
+
+vue/react/angular+python
+flask(blueprint+babel)+Dockerfile+Docker-compose.yml
+
 
 ### Stable-Diffusion
-生成式模型，文本转图像，
+生成式模型，文本转图像
 ### 开源模型
 - 百度-文心一言
 - 阿里-通义千问

@@ -1,5 +1,12 @@
 # k8s
-
+## k8s命令
+* 首次执行yml文件 kubectl create -f xxx.yml
+* 修改yml文件后执行 kubectl apply -f xxx.yml
+* 删除yml定义的所有资源 kubectl delete -f xxx.yml
+* 查看pod列表 kubectl get pods
+* 进入容器 kubectl exec -it xxx（podName） -- /bin/sh
+* 查看日志 kubectl logs xxx（podName）
+* 查看ip和端口信息 kubectl get ep
 ## 组件
 * kube-apiserver：Kubernetes API 服务器，提供 Kubernetes API 的访问和管理。
 

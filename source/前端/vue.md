@@ -5,7 +5,15 @@
 vue init webpack admin-front
 npm install
 npm run dev
+
+##或者
+npm create vue@latest
+cd xx
+npm install
+npm run dev/build
 ```
+![vue](vue.png)
+![file_struct](file_struct.png)
 - index.html
 - package.json
 - config
