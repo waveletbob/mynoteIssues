@@ -9,6 +9,7 @@
       人文科学.md
       自然科学.md
       社会科学.md
+      生活.md
 .. only:: subproject and html
 
 
