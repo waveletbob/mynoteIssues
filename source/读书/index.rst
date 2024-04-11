@@ -8,7 +8,7 @@
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents
+   :caption: Contents:
 
       读书.md
       人文科学.md
