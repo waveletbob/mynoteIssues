@@ -16,6 +16,7 @@ https://docs.conda.io/en/latest/miniconda.html
 conda create -n textgen python=3.10.9
 conda activate textgen
 
+conda env list
 
 ## setup.py
 
