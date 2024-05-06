@@ -28,6 +28,8 @@
 
 ## metadata
 
-- metadata.json：所有snap-metadata.json
-- avro manifest:每个副本每个表关联的文件以及文件的元数据
+- metadata.json：记录所有snap-metadata.json
 - snap.avro：记录每个副本的manifest-list
+- avro-manifest:每个副本每个表关联的文件以及文件的元数据
+
+

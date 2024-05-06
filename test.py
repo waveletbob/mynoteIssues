@@ -32,7 +32,7 @@ codes=['513050','159871','159996','159611','159981','512660','512690','515220','
        ]
 code_special=["159819",'159869','515790','516160','515030','159766']
 
-for code in codes:
+for code in codes+code_special:
 
     name=str(info[info['代码']==code]['名称'].values)
 
