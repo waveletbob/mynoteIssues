@@ -2,7 +2,7 @@ name: Schedule Run
 on:
   schedule:
     # Runs at 0:00 UTC everyday
-    - cron:  '0 0 * * *'
+    - cron:  '0 1 * * 1-5'
 
 jobs:
   build:

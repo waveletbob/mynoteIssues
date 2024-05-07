@@ -11,6 +11,8 @@
 """
 import akshare as ak
 import requests
+import time
+from datetime import datetime, timedelta
 def send_wechat(msg):
     token = '41568f9bd3884c5ebd99623c5e475ae4'#前边复制到那个token
     title = '基金推送'
@@ -31,13 +33,30 @@ codes=['513050','159871','159996','159611','159981','512660','512690','515220','
        '159928','512290','512980','159870','516110'
        ]
 code_special=["159819",'159869','515790','516160','515030','159766']
-
+date_format = "%Y%m%d"
+sixty_days_ago = datetime.now() - timedelta(days=60)
+formatted_date = sixty_days_ago.strftime(date_format)
 for code in codes+code_special:
 
     name=str(info[info['代码']==code]['名称'].values)
 
-    stock_df = ak.fund_etf_hist_em(symbol=code,period="daily", start_date="20240101")
-
+    retry_times = 5
+    sleep_time = 60  # 设置休眠时间为60秒
+    stock_df=[]
+    for i in range(retry_times):
+        try:
+            stock_df = ak.fund_etf_hist_em(symbol=code, period="daily", start_date=formatted_date)
+            # 如果上一行代码没有抛出异常，那么代码执行会跳到 break 语句，终止循环
+            break
+        except Exception as e:  # 处理网络超时、连接失败等可能出现的异常
+            print(f"An error happened: {e}. Retrying...")
+            # 如果抛出异常，则执行以下语句，
+            # 如果没有达到重试次数限制，就暂停一分钟后重新尝试执行请求
+            if i < retry_times - 1:  # 检查是否达到了重试次数限制
+                time.sleep(sleep_time)
+            else:
+                print("We've tried several times and failed. Please check the error.")
+                raise  # 重新引发异常，通知上层调用者出现了问题
 
 
     ## 获取MA指标
@@ -62,13 +81,7 @@ for code in codes+code_special:
     day_change_pct_20=stock_df['20_day_change_pct'].iloc[-1]
     day_change_pct_10=stock_df['20_day_change_pct'].iloc[-1]
 
-    # print(name+":"+code)
-    # print(day_change_pct_20>0)
-    # print(last_price_ma20>price)
-    # print(last_price_ma20)
-    # print(price)
-    # print(day_change_pct_10)
-    # break
+
     ##如果最近20个交易日涨幅为正，且最新价>ma10、ma20
     if day_change_pct_20>0 and last_price_ma20<price and day_change_pct_10>0:
         # print(name+code)
