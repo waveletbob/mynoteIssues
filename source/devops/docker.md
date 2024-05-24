@@ -11,7 +11,7 @@
 
 ## dockerfile服务镜像打包
 
-dockefile
+dockefile然后在docker/podman/k8s上build
 maven插件
 
 

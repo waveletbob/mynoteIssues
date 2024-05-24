@@ -1,4 +1,9 @@
 # k8s
+## 安装
+- 独立部署单机学习测试
+- 高可用多节点
+- 高密度部署
+
 ## k8s命令
 * 首次执行yml文件 kubectl create -f xxx.yml
 * 修改yml文件后执行 kubectl apply -f xxx.yml

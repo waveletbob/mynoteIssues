@@ -79,11 +79,12 @@ for code in codes+code_special:
     price=stock_df['收盘'].iloc[-1]
 
     day_change_pct_20=stock_df['20_day_change_pct'].iloc[-1]
-    day_change_pct_10=stock_df['20_day_change_pct'].iloc[-1]
+    day_change_pct_10=stock_df['10_day_change_pct'].iloc[-1]
+    day_change_pct_5=stock_df['5_day_change_pct'].iloc[-1]
 
 
     ##如果最近20个交易日涨幅为正，且最新价>ma10、ma20
-    if day_change_pct_20>0 and last_price_ma20<price and day_change_pct_10>0:
+    if day_change_pct_20>0 and last_price_ma20<price and day_change_pct_10>0 and day_change_pct_5>0:
         # print(name+code)
         # print(stock_df.iloc[-1])
         buy_list[code+name]=day_change_pct_20
