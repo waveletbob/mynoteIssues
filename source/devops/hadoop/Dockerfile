@@ -1,49 +1,48 @@
-# 使用官方 Java 镜像作为基础镜像
-FROM openjdk:8-jdk
+FROM ubuntu:14.04
+#FROM sequenceiq/hadoop-docker:2.7.0
 
+WORKDIR /root
 
-# 设置 Hadoop 版本和下载 URL
-ENV HADOOP_VERSION 3.2.4
-#ENV HADOOP_URL https://mirrors.tuna.tsinghua.edu.cn/apache/hadoop/common/hadoop-$HADOOP_VERSION/hadoop-$HADOOP_VERSION.tar.gz
-ENV HADOOP_URL https://mirrors.tuna.tsinghua.edu.cn/apache/hadoop/common/hadoop-3.2.4/hadoop-3.2.4.tar.gz
+# install openssh-server, openjdk and wget
+RUN apt-get update && apt-get install -y openssh-server openjdk-7-jdk wget
 
-# 下载并解压 Hadoop
-RUN wget $HADOOP_URL \
-#    && wget  $HADOOP_URL.asc \
-#    && sha512sum -c hadoop-$HADOOP_VERSION.tar.gz.sha512 \
-    && tar -xzf hadoop-$HADOOP_VERSION.tar.gz -C /opt/ \
-    && rm hadoop-$HADOOP_VERSION.tar.gz*
-# 安装 Java
-RUN ls -l /usr/local/openjdk-8
-ENV JAVA_HOME /usr/local/openjdk-8
-ENV PATH $JAVA_HOME/bin:$PATH
-## 配置Hadoop
-#RUN echo "fs.defaultFS=hdfs://localhost:9000" > $HADOOP_HOME/etc/hadoop/core-site.xml
-#RUN cat $HADOOP_HOME/etc/hadoop/core-site.xml
-#RUN echo "hadoop.tmp.dir=/app/hadoop/tmp" >> $HADOOP_HOME/etc/hadoop/core-site.xml
-#RUN cp $HADOOP_HOME/etc/hadoop/hdfs-site.xml $HADOOP_HOME/etc/hadoop/hdfs-site.xml.template
-#RUN echo "dfs.replication=1" >> $HADOOP_HOME/etc/hadoop/hdfs-site.xml
-#RUN cp $HADOOP_HOME/etc/hadoop/yarn-site.xml $HADOOP_HOME/etc/hadoop/yarn-site.xml.template
-#RUN echo "yarn.nodemanager.aux-services=mapreduce_shuffle" >> $HADOOP_HOME/etc/hadoop/yarn-site.xml
-#RUN echo "yarn.resourcemanager.address.hostname=localhost" >> $HADOOP_HOME/etc/hadoop/yarn-site.xml
-# 设置环境变量
-ENV HADOOP_HOME /opt/hadoop-$HADOOP_VERSION
-ENV PATH $HADOOP_HOME/bin/:$HADOOP_HOME/sbin/:$PATH
+# install hadoop 2.7.2
+RUN wget https://github.com/kiwenlau/compile-hadoop/releases/download/2.7.2/hadoop-2.7.2.tar.gz && \
+    tar -xzvf hadoop-2.7.2.tar.gz && \
+    mv hadoop-2.7.2 /usr/local/hadoop && \
+    rm hadoop-2.7.2.tar.gz
 
-# 工作目录设置为Hadoop目录
-#WORKDIR $HADOOP_HOME
-#RUN apt-get install ssh-client \
-#    && ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa \
-#    && cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys \
-#   && chmod 0600 ~/.ssh/authorized_keys
-# 格式化 Hadoop 分布式文件系统
+# set environment variable
+ENV JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64
+ENV HADOOP_HOME=/usr/local/hadoop
+ENV PATH=$PATH:/usr/local/hadoop/bin:/usr/local/hadoop/sbin
 
-RUN $HADOOP_HOME/bin/hdfs namenode -format
+# ssh without key
+RUN ssh-keygen -t rsa -f ~/.ssh/id_rsa -P '' && \
+    cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 
-# 开放端口
+RUN mkdir -p ~/hdfs/namenode && \
+    mkdir -p ~/hdfs/datanode && \
+    mkdir $HADOOP_HOME/logs
+
+COPY config/* /tmp/
+
+RUN mv /tmp/ssh_config ~/.ssh/config && \
+    mv /tmp/hadoop-env.sh /usr/local/hadoop/etc/hadoop/hadoop-env.sh && \
+    mv /tmp/hdfs-site.xml $HADOOP_HOME/etc/hadoop/hdfs-site.xml && \
+    mv /tmp/core-site.xml $HADOOP_HOME/etc/hadoop/core-site.xml && \
+    mv /tmp/mapred-site.xml $HADOOP_HOME/etc/hadoop/mapred-site.xml && \
+    mv /tmp/yarn-site.xml $HADOOP_HOME/etc/hadoop/yarn-site.xml && \
+    mv /tmp/slaves $HADOOP_HOME/etc/hadoop/slaves && \
+    mv /tmp/start-hadoop.sh ~/start-hadoop.sh && \
+    mv /tmp/run-wordcount.sh ~/run-wordcount.sh
+
+RUN chmod +x ~/start-hadoop.sh && \
+    chmod +x ~/run-wordcount.sh && \
+    chmod +x $HADOOP_HOME/sbin/start-dfs.sh && \
+    chmod +x $HADOOP_HOME/sbin/start-yarn.sh
+
+# format namenode
+RUN /usr/local/hadoop/bin/hdfs namenode -format
 EXPOSE 9870 9000 8020 8040 8088 10020 19888 50070 50075
-ENV HDFS_NAMENODE_USER root
-ENV HDFS_DATANODE_USER root
-ENV HDFS_SECONDARYNAMENODE_USER root
-# 启动 Hadoop 相关服务
-CMD ["bash", "-c", "$HADOOP_HOME/sbin/start-dfs.sh && $HADOOP_HOME/sbin/start-yarn.sh && tail -f /dev/null"]
+CMD [ "sh", "-c", "service ssh start;./start-hadoop.sh; bash"]

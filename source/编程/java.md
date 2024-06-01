@@ -86,5 +86,23 @@ cpu-缓存-内存-IO
 - 范型
     - ？ && T
 
+## Java8
+- Lambda表达式
+- 引用
+- 接口默认方法
+- Stream
+- Optional
+- 函数式接口
+- Nashorn, JavaScript 引擎
+- 新的日期时间 API
+- Base64
+## SPI：java.util.ServiceLoader类服务加载
+1.创建接口文件
+2.resources文件夹下创建META-INF/services文件夹
+3.在services文件夹中创建文件，用接口命名
+4.创建接口实现类
+
+
+
 
 

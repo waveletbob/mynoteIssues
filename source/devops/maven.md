@@ -1,5 +1,6 @@
 # Maven
 ## parent
+## description
 ## licenses
 ## scm
 ## modules
