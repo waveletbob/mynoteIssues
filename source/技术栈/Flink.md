@@ -227,6 +227,13 @@ ratio <0.1 ok;0.1~0.5 LOW;>0.5 HIGH
 
 常见问题：
 
+- 内存问题
+- CPU问题
+- 数据倾斜问题
+- 反压问题
+- eventTime倾斜问题（上游倾斜问题）
+- Profile分析
+
 ## rpc原理（基于akka）
 
 rpcgateway-rpcendpoint-rpcservice-rpcserver-akkarpcservice-actorsystem
