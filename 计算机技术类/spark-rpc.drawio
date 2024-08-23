@@ -1,9 +1,89 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36" version="24.7.7">
   <diagram name="第 1 页" id="9BQxVCnU5axAb6mUtWOe">
-    <mxGraphModel>
+    <mxGraphModel dx="1194" dy="581" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
+        <mxCell id="C4pEaWGnQ4TZw0wq1wtM-1" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="47" y="729" width="397" height="309" as="geometry" />
+        </mxCell>
+        <mxCell id="C4pEaWGnQ4TZw0wq1wtM-2" value="client-RpcEnv&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="153" y="729" width="92" height="41" as="geometry" />
+        </mxCell>
+        <mxCell id="C4pEaWGnQ4TZw0wq1wtM-3" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="652" y="719" width="291" height="309" as="geometry" />
+        </mxCell>
+        <mxCell id="C4pEaWGnQ4TZw0wq1wtM-4" value="server-RpcEnv&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="660" y="727" width="97" height="41" as="geometry" />
+        </mxCell>
+        <mxCell id="C4pEaWGnQ4TZw0wq1wtM-5" value="RpcEndpoint" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="347" y="756" width="95" height="117" as="geometry" />
+        </mxCell>
+        <mxCell id="C4pEaWGnQ4TZw0wq1wtM-6" value="Rpc&lt;span style=&quot;background-color: initial;&quot;&gt;Endp&lt;/span&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;ointRef&lt;/span&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="324" y="909" width="115" height="93" as="geometry" />
+        </mxCell>
+        <mxCell id="C4pEaWGnQ4TZw0wq1wtM-7" value="inbox" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="347" y="764.5" width="65" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="C4pEaWGnQ4TZw0wq1wtM-8" value="outbox" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="374" y="912" width="65" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="C4pEaWGnQ4TZw0wq1wtM-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="C4pEaWGnQ4TZw0wq1wtM-10" target="C4pEaWGnQ4TZw0wq1wtM-7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="C4pEaWGnQ4TZw0wq1wtM-10" value="&lt;pre style=&quot;background-color: rgb(43, 43, 43); color: rgb(169, 183, 198); font-family: &amp;quot;JetBrains Mono&amp;quot;, monospace; font-size: 9.8pt;&quot;&gt;Dispatcher&lt;/pre&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="196" y="784.5" width="75" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="C4pEaWGnQ4TZw0wq1wtM-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.673;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="C4pEaWGnQ4TZw0wq1wtM-8" target="C4pEaWGnQ4TZw0wq1wtM-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="C4pEaWGnQ4TZw0wq1wtM-12" value="message" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="C4pEaWGnQ4TZw0wq1wtM-11">
+          <mxGeometry x="-0.1737" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="C4pEaWGnQ4TZw0wq1wtM-13" value="&lt;span style=&quot;box-sizing: inherit; font-weight: 700; color: rgb(6, 6, 7); font-family: -apple-system, blinkmacsystemfont, &amp;quot;Helvetica Neue&amp;quot;, helvetica, &amp;quot;segoe ui&amp;quot;, arial, roboto, &amp;quot;PingFang SC&amp;quot;, miui, &amp;quot;Hiragino Sans GB&amp;quot;, &amp;quot;Microsoft Yahei&amp;quot;, sans-serif; font-size: 14px; letter-spacing: 0.25px; text-align: left; white-space-collapse: preserve; background-color: rgb(255, 255, 255);&quot;&gt;TransportContext&lt;/span&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="453" y="839" width="177" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="C4pEaWGnQ4TZw0wq1wtM-14" value="&lt;span style=&quot;color: rgb(6, 6, 7); font-family: monospace; font-size: 14px; letter-spacing: 0.25px; text-align: justify; white-space: pre-wrap; background-color: rgb(255, 255, 255);&quot;&gt;TransportClientFactory&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="434" y="842" width="209" height="29" as="geometry" />
+        </mxCell>
+        <mxCell id="C4pEaWGnQ4TZw0wq1wtM-15" value="&lt;span style=&quot;color: rgb(6, 6, 7); font-family: monospace; letter-spacing: 0.25px; text-align: justify; white-space: pre-wrap; background-color: rgb(255, 255, 255);&quot;&gt;&lt;font style=&quot;font-size: 11px;&quot;&gt;TransportServer&lt;/font&gt;&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="473" y="883" width="121" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="C4pEaWGnQ4TZw0wq1wtM-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="C4pEaWGnQ4TZw0wq1wtM-17" target="C4pEaWGnQ4TZw0wq1wtM-21">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="858" y="875" />
+              <mxPoint x="757" y="875" />
+              <mxPoint x="757" y="763" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="C4pEaWGnQ4TZw0wq1wtM-17" value="&lt;pre style=&quot;background-color: rgb(43, 43, 43); color: rgb(169, 183, 198); font-family: &amp;quot;JetBrains Mono&amp;quot;, monospace; font-size: 9.8pt;&quot;&gt;Dispatcher&lt;/pre&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="794" y="897" width="128" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="C4pEaWGnQ4TZw0wq1wtM-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="C4pEaWGnQ4TZw0wq1wtM-19" target="C4pEaWGnQ4TZw0wq1wtM-17">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="C4pEaWGnQ4TZw0wq1wtM-19" value="&lt;span style=&quot;color: rgb(6, 6, 7); font-family: -apple-system, blinkmacsystemfont, &amp;quot;Helvetica Neue&amp;quot;, helvetica, &amp;quot;segoe ui&amp;quot;, arial, roboto, &amp;quot;PingFang SC&amp;quot;, miui, &amp;quot;Hiragino Sans GB&amp;quot;, &amp;quot;Microsoft Yahei&amp;quot;, sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.25px; text-align: left; white-space-collapse: preserve; background-color: rgb(255, 255, 255);&quot;&gt;NettyRpcHandler&lt;/span&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="654" y="897" width="105" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="C4pEaWGnQ4TZw0wq1wtM-20" value="RpcEndpoint" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="775" y="736" width="166" height="87" as="geometry" />
+        </mxCell>
+        <mxCell id="C4pEaWGnQ4TZw0wq1wtM-21" value="inbox" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="777" y="748" width="65" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="C4pEaWGnQ4TZw0wq1wtM-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="C4pEaWGnQ4TZw0wq1wtM-23" target="C4pEaWGnQ4TZw0wq1wtM-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="C4pEaWGnQ4TZw0wq1wtM-23" value="&lt;span style=&quot;color: rgb(6, 6, 7); font-family: -apple-system, blinkmacsystemfont, &amp;quot;Helvetica Neue&amp;quot;, helvetica, &amp;quot;segoe ui&amp;quot;, arial, roboto, &amp;quot;PingFang SC&amp;quot;, miui, &amp;quot;Hiragino Sans GB&amp;quot;, &amp;quot;Microsoft Yahei&amp;quot;, sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.25px; text-align: left; white-space-collapse: preserve; background-color: rgb(255, 255, 255);&quot;&gt;NettyRpcHandler&lt;/span&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="75" y="788.5" width="78" height="52" as="geometry" />
+        </mxCell>
+        <mxCell id="C4pEaWGnQ4TZw0wq1wtM-24" value="&lt;pre style=&quot;background-color:#2b2b2b;color:#a9b7c6;font-family:&#39;JetBrains Mono&#39;,monospace;font-size:9.8pt;&quot;&gt;TransportServer&lt;/pre&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="54" y="980" width="136" height="54" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
