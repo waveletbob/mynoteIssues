@@ -103,11 +103,11 @@ cpu-缓存-内存-IO
     - Optional
     - transient
 
-- 注解
+- 注解 @Override
 
-- 反射
+- 反射 Ref
 
-- 范型
+- 范型 <T>
     - ？ && T
 
 ## Java8
@@ -126,6 +126,18 @@ cpu-缓存-内存-IO
 3.在services文件夹中创建文件，用接口命名
 4.创建接口实现类
 
+## 异常类-Throwable
+- Error
+  - OutOfMemoryError
+  - StackOverflowError
+- Exception
+  - InterruptedException
+  - RuntimeException
+    - NullPointerException
+    - IndexOutOfBoundsException
+    - ArithmeticException
+  - IOException
+  - SQLException
 
 
 
