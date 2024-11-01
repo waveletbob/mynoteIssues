@@ -10,7 +10,7 @@ gitlabCI提供以下功能：
 
 ## gitlab-CI/CD
 
-.gitlab-ci.yml文件编写（模版：https://gitlab.com/gitlab-org/gitlab https://gitlab.com/gitlab-org/gitlab-foss/-/tree/master/lib/gitlab/ci/templates-foss/-/tree/master/lib/gitlab/ci/templates）
+.gitlab-ci.yml文件编写（模版： https://gitlab.com/gitlab-org/gitlab-foss/-/tree/master/lib/gitlab/ci/templates-foss/-/tree/master/lib/gitlab/ci/templates）
 
 ## jar自动打包CI流程
 
@@ -51,6 +51,66 @@ build_stage:
   ```
 - 构建docker镜像并设置maven缓存
 - 提交代码并自动构建gitlab-runner
+
+## docker自动构建镜像并推送到仓库-python
+
+Dockerfile：
+```yaml
+FROM xxx
+
+ADD ./misc/sources.list /etc/apt/sources.list
+ADD ./misc/pip.conf /root/.pip/pip.conf
+ADD ./misc/requirements.txt /tmp/requirements.txt
+
+RUN pip install -U setuptools
+RUN apt-get update
+RUN apt-get install xx xx1-dev -y
+RUN pip install -r /tmp/requirements.txt
+
+ADD ./ /path/to/wordir
+WORKDIR /path/to/wordir
+EXPOSE 9098
+ENV LANG C.UTF-8
+
+```
+
+gitlab-ci/cd.yml：
+```yaml
+stages:
+  - build
+
+variables:
+  GIT_DOMAIN: https://gitlab.com
+  DOCKER_REGISTRY: dockerhub.com
+
+# 构建镜像
+build_image:
+  image: docker.com/web/python:latest
+  only:
+    - tags
+    - develop
+  stage: build
+  script:
+    - run_build_image
+
+# 处理函数
+.auto_devops: &auto_devops |
+  function run_build_image() {
+        echo building image
+        docker login -u $DOCKER_USER -p $DOCKER_TOKEN $DOCKER_REGISTRY
+        BRANCH=${CI_COMMIT_REF_NAME//\//-}
+        REPO=$(echo $CI_PROJECT_DIR | awk -F '/' '{print $NF}')
+        GROUP=$(echo $CI_PROJECT_DIR | awk -F '/' '{print $(NF-1)}')
+        DOCKER_REPO="$GROUP/$REPO"
+        branch_image=${DOCKER_REGISTRY}/$DOCKER_REPO:$BRANCH
+        echo docker build -t $branch_image .
+        docker build -t $branch_image .
+        docker push $branch_image
+  }
+
+before_script:
+  - *auto_devops
+```
 
 
 
