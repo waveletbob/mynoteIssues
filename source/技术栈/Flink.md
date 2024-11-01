@@ -4,6 +4,7 @@
 Session模式
 Application模式
 K8s-deployment
+per-job
 ```yml
 apiVersion: apps/v1
 kind: Deployment

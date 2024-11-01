@@ -10,7 +10,7 @@ gitlabCI提供以下功能：
 
 ## gitlab-CI/CD
 
-.gitlab-ci.yml文件编写
+.gitlab-ci.yml文件编写（模版：https://gitlab.com/gitlab-org/gitlab https://gitlab.com/gitlab-org/gitlab-foss/-/tree/master/lib/gitlab/ci/templates-foss/-/tree/master/lib/gitlab/ci/templates）
 
 ## jar自动打包CI流程
 

@@ -18,6 +18,7 @@ Welcome to notes-dev's documentation!
    算法/index.md
    读书/index.rst
    面试/面试大纲.md
+   问题与处理/问题与处理.md
 
 
 Indices and tables
