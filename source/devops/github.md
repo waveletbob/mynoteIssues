@@ -29,8 +29,13 @@
 - release发布分支
   - chore/xxx
 
-## github协作开发方式
+## Github 协作开发方式
 
-1.产生一个issue;
-2.针对issue开发多个pull request，如果要关联对应的issue则，只需要增加 #num 即可;
-3.pr合并后，issue会自动关闭对应的issue，也可以一个issue关联多个PR;
+1. 创建一个 Issue，并可以增加相关的任务。
+
+2. 针对 Issue 开发生成一个或多个 Pull Request。如果要关联对应的 Issue，只需要在 PR 的提交信息中增加 #num 即可。例如，若将 PR #4 与 Issue #3 关联，则提交信息需增加 "fixed #3"。若需要在 PR 合并后自动关闭关联的 Issue，则可使用以下方式：
+   - Comment
+   - Github Actions
+   - 关键字：`close`, `closes`, `closed`, `fix`, `fixes`, `fixed`, `resolve`, `resolves`
+
+3. PR 合并后，Issue 会自动关联对应的 PR，同时一个 Issue 也可以关联多个 PR。
