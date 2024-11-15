@@ -39,3 +39,4 @@
    - 关键字：`close`, `closes`, `closed`, `fix`, `fixes`, `fixed`, `resolve`, `resolves`
 
 3. PR 合并后，Issue 会自动关联对应的 PR，同时一个 Issue 也可以关联多个 PR。
+
