@@ -13,4 +13,19 @@
 
 ## .baseline文件夹
 
+## 分支管理
+明明风格：
+小写字母-小写字母,仅使用字母数字，连接符-，避免使用特殊符号
+- 主分支
+    - master/main 主分支，包含准备发布的代码
+    - develeop 开发分支，包含正在开发的代码和新功能
+
+- 功能分支
+  - feature/xxx
+- bugfix修复分支
+  - bugfix/xxx
+- 热修复分支
+  - hotfix/xxxx
+- release发布分支
+  - chore/xxx
 
