@@ -13,4 +13,24 @@
 
 ## .baseline文件夹
 
+## 分支管理
+明明风格：
+小写字母-小写字母,仅使用字母数字，连接符-，避免使用特殊符号
+- 主分支
+    - master/main 主分支，包含准备发布的代码
+    - develeop 开发分支，包含正在开发的代码和新功能
 
+- 功能分支
+  - feature/xxx
+- bugfix修复分支
+  - bugfix/xxx
+- 热修复分支
+  - hotfix/xxxx
+- release发布分支
+  - chore/xxx
+
+## github协作开发方式
+
+1.产生一个issue;
+2.针对issue开发多个pull request，如果要关联对应的issue则，只需要增加 #num 即可;
+3.pr合并后，issue会自动关闭对应的issue，也可以一个issue关联多个PR;
