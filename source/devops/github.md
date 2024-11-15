@@ -29,3 +29,8 @@
 - release发布分支
   - chore/xxx
 
+## github协作开发方式
+
+1.产生一个issue;
+2.针对issue开发多个pull request，如果要关联对应的issue则，只需要增加 #num 即可;
+3.pr合并后，issue会自动关闭对应的issue，也可以一个issue关联多个PR;
