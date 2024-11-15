@@ -82,5 +82,15 @@ SparkParquetWriter
 
 写元数据
 
+## uopdate：MOR VS COW
+merge on read
+copy on write
+
+## delete
+- position delete
+- ~~equal delete~~
+
+
+
 
 

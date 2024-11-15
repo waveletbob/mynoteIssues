@@ -140,6 +140,19 @@ cpu-缓存-内存-IO
     - ArithmeticException
   - IOException
   - SQLException
+## 基准测试Benchmark
+- 基准测试工具：JMH
+- 常用注解
+```java
+@Fork(1)
+@State(Scope.Benchmark)
+@Warmup(iterations = 3)
+@Measurement(iterations = 5)
+@Timeout(time = 20, timeUnit = TimeUnit.MINUTES)
+@BenchmarkMode(Mode.SingleShotTime)
+@Benchmark
+@Threads(1)
+```
 
 
 
