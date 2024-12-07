@@ -284,7 +284,23 @@ gradle -q tasks --all
 gradle projects
 ```
 
+## Gradle Version版本目录
 
+根目录创建 gradle/libs.versions.toml
 
+内容格式
 
+```shell
+
+[version]
+
+xx="0.1.1"
+
+[liberaries]
+xx={ group = "com.jcraft", name = "jsch", version.ref = "jsch" }
+#build.gradle文件引用
+dependencies {
+    impementation libs.xx
+}
+```
 
