@@ -82,13 +82,37 @@ SparkParquetWriter
 
 写元数据
 
-## uopdate：MOR VS COW
+## update：MOR VS COW
 merge on read
 copy on write
 
 ## delete
 - position delete
 - ~~equal delete~~
+
+
+## create table
+
+
+spark.sql("create table test_iceberg(dt int,data string) using iceberg partitioned by(dt)")
+
+sql-explain-plan:
+
+== Parsed Logical Plan ==
+'CreateTableStatement [local, g66na, test_iceberg], [StructField(dt,LongType,true), StructField(data,StringType,true)], [dt], iceberg, false, false
+
+== Analyzed Logical Plan ==
+CreateV2Table org.apache.iceberg.spark.SparkCatalog@683fe7b5, g66na.test_iceberg, [StructField(dt,LongType,true), StructField(data,StringType,true)], [dt], [provider=iceberg], false
+
+== Optimized Logical Plan ==
+CommandResult CreateTable org.apache.iceberg.spark.SparkCatalog@683fe7b5, g66na.test_iceberg, [StructField(dt,LongType,true), StructField(data,StringType,true)], [dt], [provider=iceberg, owner=game-netease], false
++- CreateV2Table org.apache.iceberg.spark.SparkCatalog@683fe7b5, g66na.test_iceberg, [StructField(dt,LongType,true), StructField(data,StringType,true)], [dt], [provider=iceberg], false
+
+== Physical Plan ==
+CommandResult <empty>
++- CreateTable org.apache.iceberg.spark.SparkCatalog@683fe7b5, g66na.test_iceberg, [StructField(dt,LongType,true), StructField(data,StringType,true)], [dt], [provider=iceberg, owner=game-netease], false
+
+SparkCatalog.createTable()->HadooptableBuilder.create()->HadoopTableOperations.commit(null,metadata)
 
 
 

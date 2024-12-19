@@ -10,7 +10,36 @@
 - SECURITY.md安全漏洞相关
 - labeler.yml自动打标签
 - dependabot.yml 新版本发布自动pull请求机器人
-
+```yml
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "sunday"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+  - package-ecosystem: "gradle"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "sunday"
+    open-pull-requests-limit: 50
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "sunday"
+    open-pull-requests-limit: 5
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+```
 ## .baseline文件夹
 
 ## 分支管理
@@ -38,5 +67,5 @@
    - Github Actions
    - 关键字：`close`, `closes`, `closed`, `fix`, `fixes`, `fixed`, `resolve`, `resolves`
 
-3. PR 合并后，Issue 会自动关联对应的 PR，同时一个 Issue 也可以关联多个 PR。
+3. PR 合并后，Issue 会自动关联对应的 PR，同时一个 Issue 也可以关联多个 PR。xx
 
