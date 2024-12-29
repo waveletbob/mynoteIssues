@@ -10,7 +10,7 @@
    :maxdepth: 1
    :caption: Contents
 
-   读书.md
+   读书目录.md
    人文科学.md
    自然科学.md
    社会科学.md
