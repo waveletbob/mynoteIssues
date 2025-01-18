@@ -32,7 +32,7 @@
 - 增强学习
 
 
-### 大模型LLM(开源大型语言模型)
+## 大模型LLM(开源大型语言模型)
  [生命周期](https://developer.qcloudimg.com/http-save/yehe-5990800/6853d7f31bbe33a0f0145e6e13446977.png)
 
  「1、项目目标」：首先，明确项目目标。决定LLM是作为一个通用工具还是专注于特定任务（如命名实体识别）。明确的目标有助于节省时间和资源。
@@ -45,9 +45,9 @@
 
 「5、模型部署」：当模型表现符合预期时，进行部署。在这个阶段，优化计算效率和用户体验。
 
-#### LLM概览
-> 社区资料： [Hugging-Face](https://g.126.fm/01WwwzE)
->
+### LLM概览
+> 社区资料： [Hugging-Face](https://g.126.fm/01WwwzE)、CivitAI、Ollama
+> 基础模型：多面手；预训练模型：领域专家；多模态
 > 词向量-Cbow/Skip-Gram
 > ![img_2.png](img_2.png)
 
@@ -91,29 +91,37 @@
   - T5
   - MT-DNN
   - PaLM2
-#### 微调
+### 微调
 - 上下文学习、零样本、单样本和少样本推理
 - 有监督微调(SFT)
 - 微调方法：
   - 指令微调
   - 全微调（FFT
-  - 参数高效微调（PEFT
+  - 参数高效微调（PEFT）2021年微软提出的 LORA，斯坦福提出的 Prefix-Tuning，谷歌提出的 Prompt Tuning，2022年清华提出的 P-tuning v2、2023年华盛顿大学提出的QLoRA、2024年英伟达提出DoRA等基本上都是属于该范畴
 - 其他
   - 迁移学习
   - 任务特定微调
   - 灾难性遗忘
   - 多任务学习
   - 顺序微调
-- 检索增强RAG
+- QLoRA
+
+### AI Agent
+- AutoGPT
+### RAG（微调替代方案）
+
+### Stable-Diffusion
+生成式模型，文本转图像
 ### 服务架构
 
 vue/react/angular+python
 flask(blueprint+babel)+Dockerfile+Docker-compose.yml
 
+- 本地搭建
+>1.ollama命令工具下载安装\
+>2.安装大模型：ollama run deepseek-coder:latest\
+>3.IDEA(vscode+codegpt)整合:
 
-
-### Stable-Diffusion
-生成式模型，文本转图像
 ### 开源模型
 - 百度-文心一言
 - 阿里-通义千问
@@ -124,10 +132,16 @@ flask(blueprint+babel)+Dockerfile+Docker-compose.yml
 - 360—360智脑
 - 京东—言犀
 - 悟道大模型
-### Benchmarks
+- 智谱AI-清华GLM
+- 百川智能
+- 月之暗面Kimi
+- MinMax
+- 幻方DeepSeek
+- 零一万物
+- 阶跃星辰
+### 评估&Benchmarks
 - SuperGLUE（NLP）
 - ImageNet(CV)
-
 ## 应用
 - Ai办公
 - AI图像
