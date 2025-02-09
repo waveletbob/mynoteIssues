@@ -6,7 +6,7 @@
 * 推理 inference
 * pytorch开发工具，提供transformer等库进行模型搭建
 * deep speed并行训练
-* langchain 大模型与外部计算/数据源结合，类似jdbc
+* langchain 大模型与外部计算/数据源结合，类似jdbc，端到端接口
 * prompt提示工程
 
 
@@ -104,12 +104,14 @@
   - 灾难性遗忘
   - 多任务学习
   - 顺序微调
-- QLoRA
+  - 强化学习
 
 ### AI Agent
 - AutoGPT
 ### RAG（微调替代方案）
-
+- 本地知识语料库，索引
+- 检索：文本向量相似度匹配
+- LLM：根据检索知识库，生成prompt，递给LLM回答
 ### Stable-Diffusion
 生成式模型，文本转图像
 ### 服务架构
@@ -117,28 +119,33 @@
 vue/react/angular+python
 flask(blueprint+babel)+Dockerfile+Docker-compose.yml
 
-- 本地搭建
+- 本地搭建ollama
 >1.ollama命令工具下载安装\
 >2.安装大模型：ollama run deepseek-coder:latest\
->3.IDEA(vscode+codegpt)整合:
+>3.IDEA(vscode+codegpt)整合
+
+- webui
 
 ### 开源模型
+- openai-chatgpt
+- claude
+- gemini
+- 字节-豆包
 - 百度-文心一言
 - 阿里-通义千问
-- 腾讯—混元助手
 - 华为—盘古
+- 腾讯—混元助手
 - 科大讯飞—讯飞星火
-- 网易—玉言
-- 360—360智脑
 - 京东—言犀
 - 悟道大模型
-- 智谱AI-清华GLM
-- 百川智能
-- 月之暗面Kimi
-- MinMax
-- 幻方DeepSeek
-- 零一万物
-- 阶跃星辰
+- 智谱AI-清华GLM-B端
+- 百川智能-医疗行业-B端
+- 月之暗面Kimi-C端
+- MinMax-C端
+- 阶跃星辰-C端
+- 幻方DeepSeek-C端
+- 零一万物-C端
+
 ### 评估&Benchmarks
 - SuperGLUE（NLP）
 - ImageNet(CV)
