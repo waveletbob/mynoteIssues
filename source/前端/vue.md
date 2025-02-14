@@ -2,6 +2,7 @@
 
 ## 工程结构
 ```bash
+npm install vue vue-router vuex @vue/cli
 vue init webpack admin-front
 npm install
 npm run dev
@@ -12,6 +13,7 @@ cd xx
 npm install
 npm run dev/build
 ```
+![create-vue](create-vue.png)
 ![vue](vue.png)
 ![file_struct](file_struct.png)
 - index.html

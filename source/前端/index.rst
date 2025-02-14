@@ -39,9 +39,13 @@ UI
 
     构建工具 Webpack
     构建工具 gulp
+    Babel转码器
     CSS 预处理器 Sass
-    自动化测试
+    自动化测试jest
     持续集成
+    代码检查eslint+Prettier
+    脚手架：vue-cli、CRA、Vite、Angular CLI、Yeoman、Next.js、Vue Router路由器
+
 .. toctree::
    :maxdepth: 1
 
