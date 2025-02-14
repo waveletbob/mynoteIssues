@@ -96,8 +96,9 @@
 - 有监督微调(SFT)
 - 微调方法：
   - 指令微调
-  - 全微调（FFT
-  - 参数高效微调（PEFT）2021年微软提出的 LORA，斯坦福提出的 Prefix-Tuning，谷歌提出的 Prompt Tuning，2022年清华提出的 P-tuning v2、2023年华盛顿大学提出的QLoRA、2024年英伟达提出DoRA等基本上都是属于该范畴
+  - Prompt Engineering
+  - 全参数微调（FFT）
+  - 参数高效微调（PEFT、Lora、Adapter）2021年微软提出的 LORA，斯坦福提出的 Prefix-Tuning，谷歌提出的 Prompt Tuning，2022年清华提出的 P-tuning v2、2023年华盛顿大学提出的QLoRA、2024年英伟达提出DoRA等基本上都是属于该范畴
 - 其他
   - 迁移学习
   - 任务特定微调
@@ -106,14 +107,16 @@
   - 顺序微调
   - 强化学习
 
-### AI Agent
-- AutoGPT
+
 ### RAG（微调替代方案）
 - 本地知识语料库，索引
 - 检索：文本向量相似度匹配
 - LLM：根据检索知识库，生成prompt，递给LLM回答
 ### Stable-Diffusion
 生成式模型，文本转图像
+### 多模态
+### AI Agent智能体
+
 ### 服务架构
 
 vue/react/angular+python
@@ -122,10 +125,26 @@ flask(blueprint+babel)+Dockerfile+Docker-compose.yml
 - 本地搭建ollama
 >1.ollama命令工具下载安装\
 >2.安装大模型：ollama run deepseek-coder:latest\
->3.IDEA(vscode+codegpt)整合
+>3.IDEA(vscode+codegpt)插件整合、Chat客户端
 
-- webui
-
+### 训练过程（minimind）
+- 机器配置：单机单卡/单机多卡DP/多机多卡DDP/，显卡主要看vRAM容量以及核心数，通畅入门级别12/24G.高端配置48/80G
+- 数据集DataLoader/Dataset
+- 预训练学知识
+  - Model(Dense/MoE)
+  - tokenizer
+  - amp.GradScaler自动混合训练，加速训练减少内存
+  - optim-AdamW优化器
+  - ddp-DistributedDataParallel/DistributedSampler分布式训练（DeepSpeed、Megatron）
+  - CrossEntropyLoss
+  - state_dict-ckp
+  - model.train
+- 监督微调-sft(Supervised Fine-Tuning)-学对话
+- RL_HF-强化学习DPO
+- KD知识蒸馏
+- LoRA微调 (Low-Rank Adaptation)
+- 训练推理模型 (Reasoning Model)
+- 测试效果
 ### 开源模型
 - openai-chatgpt
 - claude
@@ -149,6 +168,7 @@ flask(blueprint+babel)+Dockerfile+Docker-compose.yml
 ### 评估&Benchmarks
 - SuperGLUE（NLP）
 - ImageNet(CV)
+
 ## 应用
 - Ai办公
 - AI图像
@@ -156,6 +176,7 @@ flask(blueprint+babel)+Dockerfile+Docker-compose.yml
 - AI问答
 ![img_3.png](img_3.png)
 ![img_4.png](img_4.png)
+
 ## 免费云计算
 - colab
 - Kaggle
