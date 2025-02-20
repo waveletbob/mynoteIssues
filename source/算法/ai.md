@@ -1,4 +1,8 @@
 # AI
+## 发展历史
+![ai-history](ai-history.png)
+
+主要模型：知识库->统计学习（machine learning）->神经网络（Deep learning）-> CNN/RNN->Transformer->LLM
 
 ## 概念
 * 预训练模型-hugging face-LLM
@@ -97,6 +101,7 @@
 - 微调方法：
   - 指令微调
   - Prompt Engineering
+  - RAG
   - 全参数微调（FFT）
   - 参数高效微调（PEFT、Lora、Adapter）2021年微软提出的 LORA，斯坦福提出的 Prefix-Tuning，谷歌提出的 Prompt Tuning，2022年清华提出的 P-tuning v2、2023年华盛顿大学提出的QLoRA、2024年英伟达提出DoRA等基本上都是属于该范畴
 - 其他
@@ -111,11 +116,12 @@
 ### RAG（微调替代方案）
 - 本地知识语料库，索引
 - 检索：文本向量相似度匹配
-- LLM：根据检索知识库，生成prompt，递给LLM回答
+- LLM：根据检索知识库，生成prompt，递给LLM回答,如Bonito框架
 ### Stable-Diffusion
 生成式模型，文本转图像
 ### 多模态
 ### AI Agent智能体
+### 文件格式
 
 ### 服务架构
 
@@ -132,14 +138,14 @@ flask(blueprint+babel)+Dockerfile+Docker-compose.yml
 - 数据集DataLoader/Dataset
 - 预训练学知识
   - Model(Dense/MoE)
-  - tokenizer
+  - tokenizer（ChatGLM2-6B）
   - amp.GradScaler自动混合训练，加速训练减少内存
   - optim-AdamW优化器
   - ddp-DistributedDataParallel/DistributedSampler分布式训练（DeepSpeed、Megatron）
   - CrossEntropyLoss
   - state_dict-ckp
   - model.train
-- 监督微调-sft(Supervised Fine-Tuning)-学对话
+- 监督微调-sft(Supervised Fine-Tuning)-学对话-QLora
 - RL_HF-强化学习DPO
 - KD知识蒸馏
 - LoRA微调 (Low-Rank Adaptation)
