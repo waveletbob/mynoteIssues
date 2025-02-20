@@ -10,8 +10,9 @@
    :maxdepth: 1
    :caption: Contents
 
-   云原生.md
+   数据仓库架构.md
    数据湖.md
+   湖仓一体.md
 
 
 .. only::  subproject and html
