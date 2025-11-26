@@ -60,3 +60,9 @@ setup(
 )
 
 ```
+
+## py2->py3
+
+原则：不影响线上、不改变py3的语法规则
+
+做法：python2的DeprecationWarning

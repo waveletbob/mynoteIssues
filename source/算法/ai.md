@@ -25,6 +25,7 @@
 ## CV
 ## 语音识别
 ## 自动驾驶
+
 ## 模型分类
 - LLM
 - 文生图
@@ -121,6 +122,7 @@
 生成式模型，文本转图像
 ### 多模态
 ### AI Agent智能体
+- 
 ### 文件格式
 
 ### 服务架构
@@ -179,6 +181,18 @@ flask(blueprint+babel)+Dockerfile+Docker-compose.yml
 - Ai办公
 - AI图像
 - AICode
+  - Trae（MarsCode）
+  - 通义灵码
+  - CodeBuddy
+  - Copilot
+  - Cursor
+  - Bolt
+  - Windsurf
+  - VScode+Cline
+  - Claude
+  - Cherry
+  - Augment Code
+  - Gemini CLI
 - AI问答
 ![img_3.png](img_3.png)
 ![img_4.png](img_4.png)
