@@ -122,7 +122,9 @@
 生成式模型，文本转图像
 ### 多模态
 ### AI Agent智能体
-- 
+### SKILL
+### MCP/cline
+
 ### 文件格式
 
 ### 服务架构
@@ -155,13 +157,17 @@ flask(blueprint+babel)+Dockerfile+Docker-compose.yml
 - 测试效果
 ### 开源模型
 - openai-chatgpt
-- claude
+- claude code
 - gemini
-- 字节-豆包
-- 百度-文心一言
+- grok
+- 字节-豆包-Trae
+- GLM
+- Kimi
+- DeepSeek
 - 阿里-通义千问
+- 百度-文心一言
 - 华为—盘古
-- 腾讯—混元助手
+- 腾讯—混元助手/元宝
 - 科大讯飞—讯飞星火
 - 京东—言犀
 - 悟道大模型
@@ -170,7 +176,6 @@ flask(blueprint+babel)+Dockerfile+Docker-compose.yml
 - 月之暗面Kimi-C端
 - MinMax-C端
 - 阶跃星辰-C端
-- 幻方DeepSeek-C端
 - 零一万物-C端
 
 ### 评估&Benchmarks
@@ -181,18 +186,19 @@ flask(blueprint+babel)+Dockerfile+Docker-compose.yml
 - Ai办公
 - AI图像
 - AICode
-  - Trae（MarsCode）
-  - 通义灵码
-  - CodeBuddy
-  - Copilot
+  - 字节：Trae（MarsCode）
+  - 阿里：qianwen
+  - 腾讯：CodeBuddy
+  - 微软：Copilot
   - Cursor
   - Bolt
   - Windsurf
   - VScode+Cline
-  - Claude
+  - Claude Code
   - Cherry
   - Augment Code
   - Gemini CLI
+  - OpenCode+oh-my-code+Agent
 - AI问答
 ![img_3.png](img_3.png)
 ![img_4.png](img_4.png)

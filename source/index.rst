@@ -1,28 +1,35 @@
-.. notes-dev documentation master file, created by
-   sphinx-quickstart on Wed Jun  7 16:41:42 2023.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
-Welcome to notes-dev's documentation!
+个人技术笔记
 =====================================
+
+欢迎来到我的个人技术知识库！这里记录了我在编程、技术栈、前端、DevOps、架构、算法、读书和业务等方面的学习笔记和经验总结。
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: 目录:
 
-   编程/index.rst
-   技术栈/index.rst
-   前端/index.rst
-   devops/index.rst
-   架构/index.rst
-   算法/index.md
-   读书/index.rst
-   面试/面试大纲.md
-   问题与处理/问题与处理.md
+   编程/index
+   技术栈/index
+   前端/index
+   devops/index
+   架构/index
+   算法/index
+   读书/index
+   业务/index
 
+快速导航
+----------
 
-Indices and tables
-==================
+* :doc:`编程/index` - 编程语言和编程规范
+* :doc:`技术栈/index` - 各种技术框架和工具
+* :doc:`前端/index` - 前端开发技术
+* :doc:`devops/index` - DevOps和运维相关
+* :doc:`架构/index` - 系统架构设计
+* :doc:`算法/index` - 算法和人工智能
+* :doc:`读书/index` - 读书笔记
+* :doc:`业务/index` - 业务知识
+
+索引和搜索
+----------
 
 * :ref:`genindex`
 * :ref:`modindex`
