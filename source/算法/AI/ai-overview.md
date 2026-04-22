@@ -175,32 +175,68 @@ PLLM (多模态大模型)
 - 边缘计算
 - 混合部署
 
-### 主流LLM模型
+### 主流LLM模型 (2024年最新)
 
 #### 开源模型
 
 | 模型 | 参数 | 发布方 | 特点 |
 |------|------|--------|------|
-| Llama 3 | 8B/70B | Meta | 开源最强，推理能力强 |
-| Mistral | 7B/8x7B | Mistral AI | 性能优异，效率高 |
-| Qwen2 | 0.5B-72B | 阿里 | 中文能力强，多语言 |
-| DeepSeek | 7B/67B | DeepSeek | 编程能力强，开源 |
-| Yi | 6B/34B | 01.AI | 中文优化，长文本 |
-| ChatGLM3 | 6B | 智谱AI | 中文对话，低资源 |
+| Llama 3.1 | 8B/70B/405B | Meta | 开源最强，405B参数，长上下文128K |
+| Llama 3.2 | 1B/3B | Meta | 轻量级，移动端优化，多模态 |
+| Qwen2.5 | 0.5B-72B | 阿里 | 中文能力最强，编程专精，长上下文 |
+| DeepSeek V3 | 67B | DeepSeek | 编程能力顶尖，MoE架构，开源 |
+| DeepSeek Coder | 6.7B/33B | DeepSeek | 代码生成专精，开源免费 |
+| Mistral Large | 123B | Mistral AI | 性能接近GPT-4，多语言支持 |
+| Mixtral 8x7B | 47B | Mistral AI | MoE架构，高效推理 |
+| Yi 1.5 | 6B/34B | 01.AI | 中文优化，长文本200K |
+| ChatGLM4 | 9B | 智谱AI | 中文对话强，GLM-4架构 |
 | Baichuan2 | 7B/13B | 百川智能 | 中文理解，行业应用 |
-| Gemma | 2B/7B | Google | 轻量级，移动端友好 |
+| Gemma 2 | 2B/9B/27B | Google | 轻量级，移动端友好 |
+| Phi-3 | 3.8B/7B | Microsoft | 小参数高性能，推理强 |
+| InternLM2 | 7B/20B | 上海AI实验室 | 中文能力强，长上下文 |
+| TeleChat | 7B/12B | 中国电信 | 通信场景优化 |
 
 #### 闭源模型
 
 | 模型 | 发布方 | 特点 |
 |------|--------|------|
-| GPT-4 | OpenAI | 综合能力最强，多模态 |
-| Claude 3.5 | Anthropic | 长文本，安全性高 |
-| Gemini Pro | Google | 多模态原生，推理强 |
-| 文心一言 | 百度 | 中文优化，企业应用 |
-| 通义千问 | 阿里 | 多场景，阿里生态 |
-| 混元 | 腾讯 | 腾讯生态，多模态 |
-| 讯飞星火 | 科大讯飞 | 语音交互，中文优化 |
+| GPT-4o | OpenAI | 多模态原生，实时语音，速度最快 |
+| GPT-4o mini | OpenAI | 轻量级，成本低，速度快 |
+| Claude 3.5 Sonnet | Anthropic | 编程能力最强，长文本200K，Artifacts |
+| Claude 3.5 Haiku | Anthropic | 轻量级，速度快，成本低 |
+| Claude 3 Opus | Anthropic | 综合能力最强，安全性高 |
+| Gemini 1.5 Pro | Google | 原生多模态，长上下文1M，推理强 |
+| Gemini 1.5 Flash | Google | 速度快，成本低，多模态 |
+| Kimi | 月之暗面 | 长文本200万，中文理解强 |
+| 文心一言 4.0 | 百度 | 中文优化，企业应用，知识增强 |
+| 通义千问 2.5 | 阿里 | 多场景，阿里生态，长文本 |
+| 混元大模型 | 腾讯 | 腾讯生态，多模态，代码能力强 |
+| 讯飞星火 4.0 | 科大讯飞 | 语音交互，中文优化，知识问答 |
+| 智谱清言 | 智谱AI | 中文对话，GLM-4架构 |
+| 百川大模型 | 百川智能 | 中文理解，行业应用 |
+| 零一万物 | 零一万物 | Yi系列，中文优化 |
+| 阶跃星辰 | 阶跃星辰 | Step系列，多模态 |
+| Minimax | Minimax | ABAB系列，创意生成 |
+
+#### 2024年技术趋势
+
+**模型架构创新**:
+- **MoE (Mixture of Experts)**: DeepSeek V3、Mixtral、GPT-4
+- **长上下文**: Kimi (200万)、Claude 3.5 (200K)、Gemini 1.5 (1M)
+- **多模态原生**: GPT-4o、Gemini 1.5、Claude 3.5
+- **小参数高性能**: Phi-3、Gemma 2、Llama 3.2
+
+**能力突破**:
+- **编程能力**: Claude 3.5 Sonnet、DeepSeek Coder、GPT-4o
+- **推理能力**: Claude 3.5 Opus、GPT-4o、Gemini 1.5 Pro
+- **长文本理解**: Kimi、Claude 3.5、Gemini 1.5
+- **多模态理解**: GPT-4o、Gemini 1.5、Claude 3.5
+
+**应用场景**:
+- **实时交互**: GPT-4o (语音)、Claude 3.5 (代码)
+- **专业领域**: DeepSeek (编程)、Kimi (长文档)
+- **企业应用**: 文心一言、通义千问、混元
+- **移动端**: Llama 3.2、Gemma 2、Phi-3
 
 ### 模型架构演进
 

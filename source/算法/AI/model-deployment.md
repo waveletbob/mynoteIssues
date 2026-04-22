@@ -16,7 +16,7 @@ from openai import OpenAI
 client = OpenAI(api_key="your-api-key")
 
 response = client.chat.completions.create(
-    model="gpt-4",
+    model="gpt-4o",  # 使用最新的GPT-4o
     messages=[
         {"role": "user", "content": "Hello!"}
     ]
@@ -37,7 +37,7 @@ client = AzureOpenAI(
 )
 
 response = client.chat.completions.create(
-    model="gpt-4",
+    model="gpt-4o",  # 使用最新的GPT-4o
     messages=[{"role": "user", "content": "Hello!"}]
 )
 ```
@@ -50,11 +50,11 @@ response = client.chat.completions.create(
 # 安装Ollama
 curl -fsSL https://ollama.com/install.sh | sh
 
-# 下载模型
-ollama pull llama2
+# 下载模型 (使用最新的Llama 3.1)
+ollama pull llama3.1
 
 # 运行模型
-ollama run llama2
+ollama run llama3.1
 
 # API服务
 ollama serve
@@ -65,7 +65,7 @@ import requests
 
 # 调用Ollama API
 response = requests.post('http://localhost:11434/api/generate', json={
-    'model': 'llama2',
+    'model': 'llama3.1',  # 使用最新的Llama 3.1
     'prompt': 'Hello, how are you?',
     'stream': False
 })
@@ -78,8 +78,8 @@ print(response.json()['response'])
 ```python
 from vllm import LLM, SamplingParams
 
-# 初始化LLM
-llm = LLM(model="meta-llama/Llama-2-7b-hf")
+# 初始化LLM (使用最新的Llama 3.1)
+llm = LLM(model="meta-llama/Llama-3.1-8B")
 
 # 配置采样参数
 sampling_params = SamplingParams(

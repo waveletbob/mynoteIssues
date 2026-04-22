@@ -156,18 +156,18 @@ caption = processor.decode(out[0], skip_special_tokens=True)
 print("图像描述:", caption)
 ```
 
-### GPT-4V
+### GPT-4o
 
-GPT-4V (GPT-4 with Vision) 是OpenAI的多模态大模型。
+GPT-4o (GPT-4 Omni) 是OpenAI最新的多模态大模型，支持文本、图像、音频、视频等多种模态，具有实时语音交互能力。
 
 ```python
 from openai import OpenAI
 
-client = OpenAI()
+client = OpenAI(api_key="your-api-key")
 
 # 图像理解
 response = client.chat.completions.create(
-    model="gpt-4-vision-preview",
+    model="gpt-4o",  # 使用最新的GPT-4o
     messages=[
         {
             "role": "user",
@@ -185,6 +185,59 @@ response = client.chat.completions.create(
 )
 
 print(response.choices[0].message.content)
+```
+
+### Claude 3.5 Sonnet
+
+Claude 3.5 Sonnet是Anthropic的多模态大模型，支持图像理解和代码生成。
+
+```python
+import anthropic
+
+client = anthropic.Anthropic(api_key="your-api-key")
+
+# 图像理解
+message = client.messages.create(
+    model="claude-3-5-sonnet-20241022",
+    max_tokens=1000,
+    messages=[
+        {
+            "role": "user",
+            "content": [
+                {"type": "text", "text": "描述这张图片"},
+                {
+                    "type": "image",
+                    "source": {
+                        "type": "url",
+                        "url": "https://example.com/image.jpg"
+                    }
+                }
+            ]
+        }
+    ]
+)
+
+print(message.content[0].text)
+```
+
+### Gemini 1.5 Pro
+
+Gemini 1.5 Pro是Google的原生多模态大模型，支持超长上下文（1M tokens）。
+
+```python
+import google.generativeai as genai
+
+genai.configure(api_key="your-api-key")
+
+model = genai.GenerativeModel('gemini-1.5-pro')
+
+# 图像理解
+response = model.generate_content([
+    "描述这张图片",
+    genai.Image.from_url("https://example.com/image.jpg")
+])
+
+print(response.text)
 ```
 
 ## 文生图模型

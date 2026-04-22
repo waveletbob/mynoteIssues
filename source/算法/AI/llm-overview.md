@@ -96,18 +96,137 @@ def causal_language_model_loss(model, input_ids, attention_mask):
     return loss
 ```
 
-## 主流LLM模型
+## 主流LLM模型 (2024年最新)
 
-### Llama系列
+### GPT系列 (OpenAI)
 
-Llama是Meta开源的LLM系列，具有优秀的性能和开放性。
+#### GPT-4o
+- **特点**: 多模态原生，实时语音交互，速度最快
+- **上下文**: 128K tokens
+- **优势**: 实时语音对话、多模态理解、编程能力强
+- **应用**: 实时对话、代码生成、多模态任务
+
+#### GPT-4o mini
+- **特点**: 轻量级，成本低，速度快
+- **上下文**: 128K tokens
+- **优势**: 成本效益高，适合大规模应用
+- **应用**: 轻量级任务、批量处理
+
+```python
+import openai
+
+client = openai.OpenAI(api_key="your-api-key")
+
+# GPT-4o 示例
+response = client.chat.completions.create(
+    model="gpt-4o",
+    messages=[
+        {"role": "system", "content": "You are a helpful assistant."},
+        {"role": "user", "content": "Explain quantum computing"}
+    ],
+    max_tokens=1000
+)
+
+print(response.choices[0].message.content)
+```
+
+### Claude系列 (Anthropic)
+
+#### Claude 3.5 Sonnet
+- **特点**: 编程能力最强，长文本200K，Artifacts功能
+- **上下文**: 200K tokens
+- **优势**: 代码生成、长文档分析、安全性高
+- **应用**: 编程、文档分析、安全敏感任务
+
+#### Claude 3.5 Haiku
+- **特点**: 轻量级，速度快，成本低
+- **上下文**: 200K tokens
+- **优势**: 快速响应，成本效益高
+- **应用**: 实时对话、快速分析
+
+#### Claude 3 Opus
+- **特点**: 综合能力最强，安全性高
+- **上下文**: 200K tokens
+- **优势**: 推理能力、安全性、长文本
+- **应用**: 复杂推理、安全敏感任务
+
+```python
+import anthropic
+
+client = anthropic.Anthropic(api_key="your-api-key")
+
+# Claude 3.5 Sonnet 示例
+message = client.messages.create(
+    model="claude-3-5-sonnet-20241022",
+    max_tokens=1000,
+    messages=[
+        {"role": "user", "content": "Write a Python function to sort a list"}
+    ]
+)
+
+print(message.content[0].text)
+```
+
+### Gemini系列 (Google)
+
+#### Gemini 1.5 Pro
+- **特点**: 原生多模态，长上下文1M，推理强
+- **上下文**: 1M tokens
+- **优势**: 超长文本、多模态理解、推理能力
+- **应用**: 长文档分析、多模态任务
+
+#### Gemini 1.5 Flash
+- **特点**: 速度快，成本低，多模态
+- **上下文**: 1M tokens
+- **优势**: 快速响应、成本效益高
+- **应用**: 实时应用、批量处理
+
+```python
+import google.generativeai as genai
+
+genai.configure(api_key="your-api-key")
+
+# Gemini 1.5 Pro 示例
+model = genai.GenerativeModel('gemini-1.5-pro')
+
+response = model.generate_content(
+    "Explain the concept of machine learning",
+    generation_config=genai.types.GenerationConfig(
+        max_output_tokens=1000,
+        temperature=0.7,
+    )
+)
+
+print(response.text)
+```
+
+### Kimi (月之暗面)
+
+- **特点**: 长文本200万，中文理解强
+- **上下文**: 200万 tokens
+- **优势**: 超长文本处理、中文理解
+- **应用**: 长文档分析、中文内容处理
+
+### Llama系列 (Meta)
+
+#### Llama 3.1
+- **参数**: 8B/70B/405B
+- **特点**: 开源最强，405B参数，长上下文128K
+- **优势**: 开源、性能强、长上下文
+- **应用**: 本地部署、研究、企业应用
+
+#### Llama 3.2
+- **参数**: 1B/3B
+- **特点**: 轻量级，移动端优化，多模态
+- **优势**: 移动端友好、多模态
+- **应用**: 移动应用、边缘计算
 
 ```python
 from transformers import LlamaForCausalLM, LlamaTokenizer
 
 # 加载模型和tokenizer
-model = LlamaForCausalLM.from_pretrained("meta-llama/Llama-2-7b-hf")
-tokenizer = LlamaTokenizer.from_pretrained("meta-llama/Llama-2-7b-hf")
+model = LlamaForCausalLM.from_pretrained("meta-llama/Llama-3.1-8B")
+tokenizer = LlamaTokenizer.from_pretrained("meta-llama/Llama-3.1-8B")
 
 # 生成文本
 input_text = "The future of AI is"
@@ -120,29 +239,143 @@ generated_text = tokenizer.decode(output[0], skip_special_tokens=True)
 print(generated_text)
 ```
 
-### Mistral系列
+### Qwen系列 (阿里)
 
-Mistral AI推出的开源模型，性能优异且效率高。
-
-```python
-from transformers import MistralForCausalLM, MistralTokenizer
-
-model = MistralForCausalLM.from_pretrained("mistralai/Mistral-7B-v0.1")
-tokenizer = MistralTokenizer.from_pretrained("mistralai/Mistral-7B-v0.1")
-
-# 使用方法与Llama类似
-```
-
-### Qwen系列
-
-阿里推出的开源模型，中文能力强。
+#### Qwen2.5
+- **参数**: 0.5B-72B
+- **特点**: 中文能力最强，编程专精，长上下文
+- **优势**: 中文理解、编程能力、长上下文
+- **应用**: 中文任务、编程、长文档
 
 ```python
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-model = AutoModelForCausalLM.from_pretrained("Qwen/Qwen-7B")
-tokenizer = AutoTokenizer.from_pretrained("Qwen/Qwen-7B")
+model = AutoModelForCausalLM.from_pretrained("Qwen/Qwen2.5-72B-Instruct")
+tokenizer = AutoTokenizer.from_pretrained("Qwen/Qwen2.5-72B-Instruct")
+
+# 使用方法与Llama类似
 ```
+
+### DeepSeek系列
+
+#### DeepSeek V3
+- **参数**: 67B
+- **特点**: 编程能力顶尖，MoE架构，开源
+- **优势**: 编程能力、MoE架构、开源
+- **应用**: 编程、代码生成
+
+#### DeepSeek Coder
+- **参数**: 6.7B/33B
+- **特点**: 代码生成专精，开源免费
+- **优势**: 代码生成、开源免费
+- **应用**: 编程、代码辅助
+
+```python
+from transformers import AutoModelForCausalLM, AutoTokenizer
+
+model = AutoModelForCausalLM.from_pretrained("deepseek-ai/DeepSeek-V3")
+tokenizer = AutoTokenizer.from_pretrained("deepseek-ai/DeepSeek-V3")
+```
+
+### Mistral系列
+
+#### Mistral Large
+- **参数**: 123B
+- **特点**: 性能接近GPT-4，多语言支持
+- **优势**: 性能强、多语言
+- **应用**: 多语言任务、企业应用
+
+#### Mixtral 8x7B
+- **参数**: 47B (MoE)
+- **特点**: MoE架构，高效推理
+- **优势**: MoE架构、高效推理
+- **应用**: 高效推理、多任务
+
+```python
+from transformers import MistralForCausalLM, MistralTokenizer
+
+model = MistralForCausalLM.from_pretrained("mistralai/Mistral-Large")
+tokenizer = MistralTokenizer.from_pretrained("mistralai/Mistral-Large")
+```
+
+### 其他重要模型
+
+#### Phi-3 (Microsoft)
+- **参数**: 3.8B/7B
+- **特点**: 小参数高性能，推理强
+- **优势**: 小参数、高性能
+- **应用**: 移动端、边缘计算
+
+#### Gemma 2 (Google)
+- **参数**: 2B/9B/27B
+- **特点**: 轻量级，移动端友好
+- **优势**: 轻量级、移动端
+- **应用**: 移动应用、边缘计算
+
+#### Yi 1.5 (01.AI)
+- **参数**: 6B/34B
+- **特点**: 中文优化，长文本200K
+- **优势**: 中文理解、长文本
+- **应用**: 中文任务、长文档
+
+#### ChatGLM4 (智谱AI)
+- **参数**: 9B
+- **特点**: 中文对话强，GLM-4架构
+- **优势**: 中文对话、GLM-4架构
+- **应用**: 中文对话、企业应用
+
+#### InternLM2 (上海AI实验室)
+- **参数**: 7B/20B
+- **特点**: 中文能力强，长上下文
+- **优势**: 中文能力、长上下文
+- **应用**: 中文任务、长文档
+
+### 国内闭源模型
+
+#### 文心一言 4.0 (百度)
+- **特点**: 中文优化，企业应用，知识增强
+- **优势**: 中文理解、企业应用
+- **应用**: 企业应用、知识问答
+
+#### 通义千问 2.5 (阿里)
+- **特点**: 多场景，阿里生态，长文本
+- **优势**: 多场景、阿里生态
+- **应用**: 企业应用、多场景
+
+#### 混元大模型 (腾讯)
+- **特点**: 腾讯生态，多模态，代码能力强
+- **优势**: 腾讯生态、多模态
+- **应用**: 企业应用、多模态
+
+#### 讯飞星火 4.0 (科大讯飞)
+- **特点**: 语音交互，中文优化，知识问答
+- **优势**: 语音交互、中文理解
+- **应用**: 语音交互、知识问答
+
+#### 智谱清言 (智谱AI)
+- **特点**: 中文对话，GLM-4架构
+- **优势**: 中文对话、GLM-4架构
+- **应用**: 中文对话、企业应用
+
+#### 百川大模型 (百川智能)
+- **特点**: 中文理解，行业应用
+- **优势**: 中文理解、行业应用
+- **应用**: 行业应用、中文任务
+
+#### 零一万物 (零一万物)
+- **特点**: Yi系列，中文优化
+- **优势**: Yi系列、中文优化
+- **应用**: 中文任务、企业应用
+
+#### 阶跃星辰 (阶跃星辰)
+- **特点**: Step系列，多模态
+- **优势**: 多模态、性能强
+- **应用**: 多模态任务、企业应用
+
+#### Minimax
+- **特点**: ABAB系列，创意生成
+- **优势**: 创意生成、多模态
+- **应用**: 创意生成、内容创作
 
 ## 模型微调
 
