@@ -5,7 +5,7 @@
    :maxdepth: 1
    :caption: Contents:
 
-   ai.md
+   AI/index
    算法.md
 
 .. only:: subproject and html

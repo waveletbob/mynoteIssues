@@ -65,14 +65,16 @@ master_doc = 'index'
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', '**.xmind', '**.pdf']
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = 'sphinx_rtd_theme'
-html_static_path = ['_static']
 templates_path = ['_templates']
+
+# Add any paths that contain custom static files
+html_static_path = ['_static', 'images']
 
 # Theme options
 html_theme_options = {
@@ -80,7 +82,8 @@ html_theme_options = {
     'collapse_navigation': False,
     'sticky_navigation': True,
     'includehidden': True,
-    'titles_only': False
+    'titles_only': False,
+    'display_version': False,
 }
 
 # HTML context for GitHub integration
@@ -91,9 +94,6 @@ html_context = {
     'github_version': 'main',
     'conf_py_path': '/source/',
 }
-
-# Add any paths that contain custom static files
-html_static_path = ['_static', 'images']
 
 # The encoding of source files
 source_encoding = 'utf-8'
