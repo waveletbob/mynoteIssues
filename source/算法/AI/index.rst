@@ -17,6 +17,12 @@ AI 人工智能技术
 
 .. toctree::
    :maxdepth: 1
+   :caption: 实践总结:
+
+   ai-practice-summary
+
+.. toctree::
+   :maxdepth: 1
    :caption: 实践指南:
 
    prompt-engineering

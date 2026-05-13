@@ -1,159 +1,42 @@
 # 模型训练指南
 
-## 训练概述
+## 训练管线
 
-模型训练是AI开发的核心环节，包括数据准备、模型选择、训练优化等步骤。
+```
+数据收集 → 数据清洗 → 预训练 → SFT 微调 → RLHF/DPO 对齐 → 评估 → 部署
+```
 
 ## 数据准备
 
-### 数据收集
+| 阶段 | 内容 | 关键要点 |
+|------|------|----------|
+| 预训练数据 | 网页文本、书籍、代码 | 去重、去噪、质量过滤（万亿 token 级） |
+| SFT 数据 | 高质量问答对 | 多样性、格式统一、人工审核 |
+| 对齐数据 | 人类偏好对比 | 对比对构造、一致性检查 |
 
-```python
-# 数据收集示例
-def collect_data(sources):
-    """收集训练数据"""
-    data = []
-    for source in sources:
-        # 从不同源收集数据
-        source_data = load_from_source(source)
-        data.extend(source_data)
-    return data
-```
+## 分布式训练
 
-### 数据预处理
+| 方法 | 适用场景 | 工具 |
+|------|---------|------|
+| DDP (单机多卡) | 小规模训练 | PyTorch 原生 |
+| DeepSpeed ZeRO | 大模型训练 | ZeRO-1/2/3 阶段 |
+| Megatron-LM | 超大模型 (100B+) | 张量并行 + 流水线并行 |
+| FSDP | PyTorch 生态 | Fully Sharded Data Parallel |
 
-```python
-# 数据预处理
-def preprocess_data(raw_data):
-    """预处理数据"""
-    cleaned_data = []
-    
-    for item in raw_data:
-        # 清洗数据
-        cleaned = clean_text(item)
-        
-        # 验证数据
-        if validate_data(cleaned):
-            cleaned_data.append(cleaned)
-    
-    return cleaned_data
-```
+## 内存优化技巧
 
-## 模型选择
+- **梯度检查点**：用时间换空间，每 N 层存一次中间结果
+- **混合精度 (BF16/FP16)**：一半显存，几乎无损
+- **CPU Offloading**：优化器状态/参数卸载到 CPU
+- **梯度累积**：小 batch 模拟大 batch
 
-### 基础模型
+## 微调实战要点
 
-- GPT系列
-- Llama系列
-- Mistral系列
-- Qwen系列
+1. **先试 LoRA**：r=8~64，alpha=2r，目标层 q_proj+v_proj
+2. **学习率**：LoRA 用 1e-4 ~ 5e-4，全参用 1e-5 ~ 5e-5
+3. **数据量**：SFT 通常几千到几万条高质量样本就够了
+4. **过拟合检测**：监控 eval loss，出现上升即停
 
-### 选择标准
+---
 
-- 任务类型
-- 资源限制
-- 性能要求
-- 部署环境
-
-## 训练优化
-
-### 分布式训练
-
-```python
-# 分布式训练配置
-import torch.distributed as dist
-
-def setup_distributed():
-    """设置分布式训练"""
-    dist.init_process_group(backend='nccl')
-    local_rank = int(os.environ['LOCAL_RANK'])
-    torch.cuda.set_device(local_rank)
-```
-
-### 混合精度训练
-
-```python
-# 混合精度训练
-from torch.cuda.amp import autocast, GradScaler
-
-scaler = GradScaler()
-
-with autocast():
-    outputs = model(inputs)
-    loss = criterion(outputs, labels)
-
-scaler.scale(loss).backward()
-scaler.step(optimizer)
-scaler.update()
-```
-
-## 评估和调优
-
-### 评估指标
-
-```python
-# 评估指标计算
-def evaluate_model(model, test_data):
-    """评估模型性能"""
-    model.eval()
-    
-    predictions = []
-    references = []
-    
-    with torch.no_grad():
-        for batch in test_data:
-            outputs = model(batch)
-            predictions.extend(outputs)
-            references.extend(batch.labels)
-    
-    # 计算指标
-    metrics = calculate_metrics(predictions, references)
-    return metrics
-```
-
-### 超参数调优
-
-```python
-# 超参数调优
-from ray import tune
-
-def train_model(config):
-    """训练模型"""
-    model = create_model(config)
-    trainer = create_trainer(model, config)
-    results = trainer.train()
-    return results
-
-# 调优
-analysis = tune.run(
-    train_model,
-    config={
-        "learning_rate": tune.loguniform(1e-5, 1e-3),
-        "batch_size": tune.choice([16, 32, 64]),
-        "hidden_size": tune.choice([128, 256, 512])
-    }
-)
-```
-
-## 最佳实践
-
-### 1. 数据管理
-
-- 版本控制
-- 数据备份
-- 隐私保护
-- 质量监控
-
-### 2. 训练监控
-
-- 实时监控
-- 异常检测
-- 自动保存
-- 日志记录
-
-### 3. 资源优化
-
-- GPU利用率
-- 内存管理
-- 网络优化
-- 存储优化
+*最后更新: 2026年5月*
