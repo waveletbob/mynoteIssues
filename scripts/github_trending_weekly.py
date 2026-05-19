@@ -198,6 +198,31 @@ def send_email(html_body: str, subject: str, cfg: dict) -> None:
     log.info('邮件发送成功 -> %s', cfg['notify_to'])
 
 
-if __name__ == '__main__':
+def main():
     cfg = load_config()
-    log.info('Config loaded. SMTP=%s, recipients=%s', cfg['smtp_host'], cfg['notify_to'])
+
+    date_from, date_to = get_date_range()
+    log.info('抓取 %s ~ %s 的 trending 仓库...', date_from, date_to)
+
+    repos = fetch_trending(date_from, github_token=cfg['github_token'])
+    if not repos:
+        log.error('未获取到任何仓库，退出')
+        sys.exit(1)
+    log.info('获取到 %d 个仓库', len(repos))
+
+    summaries = summarize_repos(repos, gemini_api_key=cfg['gemini_api_key'])
+
+    subject = f'[GitHub Trending] 上周最火开源项目 ({date_from} ~ {date_to})'
+    html = render_html(repos, summaries, date_from, date_to)
+
+    try:
+        send_email(html, subject, cfg)
+    except Exception as e:
+        log.error('邮件发送失败: %s', e)
+        sys.exit(1)
+
+    log.info('完成')
+
+
+if __name__ == '__main__':
+    main()
