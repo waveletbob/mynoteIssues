@@ -60,28 +60,32 @@ def test_fetch_trending_returns_list(monkeypatch):
     import requests
     from github_trending_weekly import fetch_trending
 
-    fake_item = {
-        'full_name': 'owner/repo',
-        'description': 'A cool project',
-        'stargazers_count': 1000,
-        'language': 'Python',
-        'html_url': 'https://github.com/owner/repo',
-        'topics': ['ai', 'llm'],
-    }
-    fake_response = {'items': [fake_item] * 20, 'total_count': 20}
+    fake_html = """
+    <html><body>
+      <article class="Box-row">
+        <h2 class="h3"><a href="/owner/repo"><span>owner /</span>repo</a></h2>
+        <p class="col-9">A cool project</p>
+        <span itemprop="programmingLanguage">Python</span>
+        <a href="/owner/repo/stargazers">1,000</a>
+        <span class="float-sm-right">567 stars this week</span>
+      </article>
+    </body></html>
+    """ * 20
 
     class FakeResp:
         status_code = 200
-        def json(self): return fake_response
+        text = fake_html
         def raise_for_status(self): pass
 
     monkeypatch.setattr(requests, 'get', lambda *a, **kw: FakeResp())
 
-    repos = fetch_trending('2026-05-11', date_to='2026-05-17', github_token='')
+    repos = fetch_trending(top_n=20)
     assert len(repos) == 20
     assert repos[0]['name'] == 'owner/repo'
     assert repos[0]['stars'] == 1000
+    assert repos[0]['week_stars'] == 567
     assert 'url' in repos[0]
+    assert repos[0]['url'] == 'https://github.com/owner/repo'
 
 
 def test_summarize_repos_returns_dict(monkeypatch):
@@ -140,6 +144,7 @@ def test_render_html_contains_repo_data():
     repos = [{
         'name': 'owner/awesome',
         'stars': 2500,
+        'week_stars': 300,
         'language': 'Python',
         'url': 'https://github.com/owner/awesome',
         'description': 'An awesome tool',

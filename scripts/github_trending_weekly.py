@@ -50,48 +50,76 @@ def get_date_range(today=None):
     return last_monday.strftime('%Y-%m-%d'), last_sunday.strftime('%Y-%m-%d')
 
 
-def fetch_trending(date_from: str, date_to: str = '', github_token: str = '', top_n: int = 20) -> list[dict]:
-    """用 GitHub Search API 获取 date_from 之后 star 最多的仓库，返回标准化列表。"""
-    url = 'https://api.github.com/search/repositories'
-    headers = {'Accept': 'application/vnd.github+json'}
-    if github_token:
-        headers['Authorization'] = f'Bearer {github_token}'
+def fetch_trending(top_n: int = 20) -> list[dict]:
+    """爬取 github.com/trending?since=weekly，返回标准化仓库列表。"""
+    from bs4 import BeautifulSoup
 
-    params = {
-        'q': f'pushed:{date_from}..{date_to} stars:>50',
-        'sort': 'stars',
-        'order': 'desc',
-        'per_page': top_n,
-        'page': 1,
+    url = 'https://github.com/trending?since=weekly'
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.5',
     }
 
     for attempt in range(3):
         try:
-            resp = requests.get(url, headers=headers, params=params, timeout=15)
+            resp = requests.get(url, headers=headers, timeout=15)
             if resp.status_code in (403, 429):
                 wait = 2 ** attempt * 5
                 log.warning('GitHub rate limit, retry in %ds (attempt %d/3)', wait, attempt + 1)
                 time.sleep(wait)
                 continue
             resp.raise_for_status()
-            items = resp.json().get('items', [])
-            return [
-                {
-                    'name': item['full_name'],
-                    'description': item.get('description') or '',
-                    'stars': item['stargazers_count'],
-                    'language': item.get('language') or 'Unknown',
-                    'url': item['html_url'],
-                    'topics': item.get('topics', []),
-                }
-                for item in items[:top_n]
-            ]
+            break
         except requests.RequestException as e:
-            log.error('GitHub API error: %s', e)
+            log.error('GitHub trending fetch error: %s', e)
             if attempt == 2:
                 raise
-    log.error('GitHub rate limit exceeded after 3 attempts, aborting')
-    return []
+    else:
+        log.error('GitHub trending fetch failed after 3 attempts')
+        return []
+
+    soup = BeautifulSoup(resp.text, 'html.parser')
+    repos = []
+
+    for article in soup.select('article.Box-row')[:top_n]:
+        name_tag = article.select_one('h2 a')
+        if not name_tag:
+            continue
+        name = name_tag.get('href', '').strip('/')
+
+        desc_tag = article.select_one('p')
+        description = desc_tag.get_text(strip=True) if desc_tag else ''
+
+        lang_tag = article.select_one('[itemprop="programmingLanguage"]')
+        language = lang_tag.get_text(strip=True) if lang_tag else 'Unknown'
+
+        stars_tag = article.select_one('a[href$="/stargazers"]')
+        stars_raw = stars_tag.get_text(strip=True).replace(',', '') if stars_tag else '0'
+        try:
+            stars = int(''.join(c for c in stars_raw if c.isdigit()) or '0')
+        except ValueError:
+            stars = 0
+
+        week_tag = article.select_one('.float-sm-right')
+        week_raw = week_tag.get_text(strip=True).replace(',', '') if week_tag else ''
+        try:
+            week_stars = int(''.join(c for c in week_raw if c.isdigit()) or '0')
+        except ValueError:
+            week_stars = 0
+
+        repos.append({
+            'name': name,
+            'description': description,
+            'stars': stars,
+            'week_stars': week_stars,
+            'language': language,
+            'url': f'https://github.com/{name}',
+            'topics': [],
+        })
+
+    log.info('爬取到 %d 个 trending 仓库', len(repos))
+    return repos
 
 
 def summarize_repos(repos: list[dict], gemini_api_key: str) -> dict[str, str]:
@@ -140,6 +168,7 @@ def render_html(repos: list[dict], summaries: dict[str, str], date_from: str, da
     for i, repo in enumerate(repos, 1):
         summary = summaries.get(repo['name'], repo['description'] or '')
         stars_fmt = f"{repo['stars']:,}"
+        week_stars_fmt = f"{repo.get('week_stars', 0):,}"
         rows += f"""
         <tr>
           <td style="text-align:center;padding:8px 12px;border-bottom:1px solid #eee;">{i}</td>
@@ -147,7 +176,7 @@ def render_html(repos: list[dict], summaries: dict[str, str], date_from: str, da
             <a href="{escape(repo['url'])}" style="color:#0366d6;text-decoration:none;font-weight:600;">{escape(repo['name'])}</a>
           </td>
           <td style="padding:8px 12px;border-bottom:1px solid #eee;">{escape(repo['language'])}</td>
-          <td style="text-align:right;padding:8px 12px;border-bottom:1px solid #eee;">⭐ {stars_fmt}</td>
+          <td style="text-align:right;padding:8px 12px;border-bottom:1px solid #eee;">⭐ {stars_fmt}<br><span style="color:#6a737d;font-size:11px;">本周+{week_stars_fmt}</span></td>
           <td style="padding:8px 12px;border-bottom:1px solid #eee;">{escape(summary)}</td>
         </tr>"""
 
@@ -205,7 +234,7 @@ def main():
     date_from, date_to = get_date_range()
     log.info('抓取 %s ~ %s 的 trending 仓库...', date_from, date_to)
 
-    repos = fetch_trending(date_from, date_to=date_to, github_token=cfg['github_token'])
+    repos = fetch_trending()
     if not repos:
         log.error('未获取到任何仓库，退出')
         sys.exit(1)
