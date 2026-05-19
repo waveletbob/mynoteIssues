@@ -36,6 +36,60 @@ def load_config() -> dict:
     }
 
 
+def get_date_range(today=None):
+    """返回上周一和上周日的 ISO 日期字符串 (YYYY-MM-DD)。"""
+    from datetime import date
+    if today is None:
+        today = date.today()
+    # 上周一 = 今天 - 今天是周几 - 6 天
+    last_monday = today - timedelta(days=today.weekday() + 7)
+    last_sunday = last_monday + timedelta(days=6)
+    return last_monday.strftime('%Y-%m-%d'), last_sunday.strftime('%Y-%m-%d')
+
+
+def fetch_trending(date_from: str, github_token: str = '', top_n: int = 20) -> list[dict]:
+    """用 GitHub Search API 获取 date_from 之后 star 最多的仓库，返回标准化列表。"""
+    url = 'https://api.github.com/search/repositories'
+    headers = {'Accept': 'application/vnd.github+json'}
+    if github_token:
+        headers['Authorization'] = f'Bearer {github_token}'
+
+    params = {
+        'q': f'pushed:>={date_from} stars:>50',
+        'sort': 'stars',
+        'order': 'desc',
+        'per_page': top_n,
+        'page': 1,
+    }
+
+    for attempt in range(3):
+        try:
+            resp = requests.get(url, headers=headers, params=params, timeout=15)
+            if resp.status_code in (403, 429):
+                wait = 2 ** attempt * 5
+                log.warning('GitHub rate limit, retry in %ds (attempt %d/3)', wait, attempt + 1)
+                import time; time.sleep(wait)
+                continue
+            resp.raise_for_status()
+            items = resp.json().get('items', [])
+            return [
+                {
+                    'name': item['full_name'],
+                    'description': item.get('description') or '',
+                    'stars': item['stargazers_count'],
+                    'language': item.get('language') or 'Unknown',
+                    'url': item['html_url'],
+                    'topics': item.get('topics', []),
+                }
+                for item in items[:top_n]
+            ]
+        except requests.RequestException as e:
+            log.error('GitHub API error: %s', e)
+            if attempt == 2:
+                raise
+    return []
+
+
 if __name__ == '__main__':
     cfg = load_config()
     log.info('Config loaded. SMTP=%s, recipients=%s', cfg['smtp_host'], cfg['notify_to'])
