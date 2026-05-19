@@ -7,13 +7,13 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'scripts'))
 
 def test_load_config_missing_required_key(monkeypatch):
     """缺少必填 key 时应抛出 SystemExit"""
+    from github_trending_weekly import load_config  # import first so load_dotenv() runs
     monkeypatch.delenv('GEMINI_API_KEY', raising=False)
     monkeypatch.delenv('SMTP_HOST', raising=False)
     monkeypatch.delenv('SMTP_USER', raising=False)
     monkeypatch.delenv('SMTP_PASS', raising=False)
     monkeypatch.delenv('NOTIFY_TO', raising=False)
 
-    from github_trending_weekly import load_config
     with pytest.raises(SystemExit):
         load_config()
 
