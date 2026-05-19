@@ -131,6 +131,71 @@ def summarize_repos(repos: list[dict], gemini_api_key: str) -> dict[str, str]:
         return fallback
 
 
+def render_html(repos: list[dict], summaries: dict[str, str], date_from: str, date_to: str) -> str:
+    """渲染 HTML 邮件正文。"""
+    rows = ''
+    for i, repo in enumerate(repos, 1):
+        summary = summaries.get(repo['name'], repo['description'] or '')
+        stars_fmt = f"{repo['stars']:,}"
+        rows += f"""
+        <tr>
+          <td style="text-align:center;padding:8px 12px;border-bottom:1px solid #eee;">{i}</td>
+          <td style="padding:8px 12px;border-bottom:1px solid #eee;">
+            <a href="{repo['url']}" style="color:#0366d6;text-decoration:none;font-weight:600;">{repo['name']}</a>
+          </td>
+          <td style="padding:8px 12px;border-bottom:1px solid #eee;">{repo['language']}</td>
+          <td style="text-align:right;padding:8px 12px;border-bottom:1px solid #eee;">⭐ {stars_fmt}</td>
+          <td style="padding:8px 12px;border-bottom:1px solid #eee;">{summary}</td>
+        </tr>"""
+
+    return f"""<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f6f8fa;margin:0;padding:20px;">
+  <div style="max-width:900px;margin:0 auto;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.1);">
+    <div style="background:#24292e;padding:20px 24px;">
+      <h1 style="color:#fff;margin:0;font-size:18px;">🔥 GitHub Trending Weekly</h1>
+      <p style="color:#8b949e;margin:4px 0 0;font-size:13px;">{date_from} ~ {date_to} 上周最火开源项目 Top {len(repos)}</p>
+    </div>
+    <table style="width:100%;border-collapse:collapse;font-size:14px;">
+      <thead>
+        <tr style="background:#f6f8fa;">
+          <th style="padding:10px 12px;text-align:center;border-bottom:2px solid #e1e4e8;">#</th>
+          <th style="padding:10px 12px;text-align:left;border-bottom:2px solid #e1e4e8;">项目</th>
+          <th style="padding:10px 12px;text-align:left;border-bottom:2px solid #e1e4e8;">语言</th>
+          <th style="padding:10px 12px;text-align:right;border-bottom:2px solid #e1e4e8;">Stars</th>
+          <th style="padding:10px 12px;text-align:left;border-bottom:2px solid #e1e4e8;">摘要</th>
+        </tr>
+      </thead>
+      <tbody>{rows}
+      </tbody>
+    </table>
+    <div style="padding:16px 24px;color:#6a737d;font-size:12px;border-top:1px solid #eee;">
+      自动生成 · <a href="https://github.com/waveletbob/mynoteIssues" style="color:#0366d6;">mynoteIssues</a>
+    </div>
+  </div>
+</body>
+</html>"""
+
+
+def send_email(html_body: str, subject: str, cfg: dict) -> None:
+    """通过 SMTP SSL 发送 HTML 邮件。失败则抛出异常（由调用方处理）。"""
+    import smtplib
+    from email.mime.multipart import MIMEMultipart
+    from email.mime.text import MIMEText
+
+    msg = MIMEMultipart('alternative')
+    msg['Subject'] = subject
+    msg['From'] = cfg['smtp_user']
+    msg['To'] = ', '.join(cfg['notify_to'])
+    msg.attach(MIMEText(html_body, 'html', 'utf-8'))
+
+    with smtplib.SMTP_SSL(cfg['smtp_host'], cfg['smtp_port']) as server:
+        server.login(cfg['smtp_user'], cfg['smtp_pass'])
+        server.sendmail(cfg['smtp_user'], cfg['notify_to'], msg.as_string())
+    log.info('邮件发送成功 -> %s', cfg['notify_to'])
+
+
 if __name__ == '__main__':
     cfg = load_config()
     log.info('Config loaded. SMTP=%s, recipients=%s', cfg['smtp_host'], cfg['notify_to'])

@@ -125,3 +125,51 @@ def test_summarize_repos_fallback_on_error(monkeypatch):
 
     result = summarize_repos(fake_repos, gemini_api_key='test-key')
     assert result['owner/repo'] == 'Fallback desc'
+
+
+def test_render_html_contains_repo_data():
+    """render_html 返回包含仓库名、stars、摘要的 HTML 字符串"""
+    from github_trending_weekly import render_html
+
+    repos = [{
+        'name': 'owner/awesome',
+        'stars': 2500,
+        'language': 'Python',
+        'url': 'https://github.com/owner/awesome',
+        'description': 'An awesome tool',
+    }]
+    summaries = {'owner/awesome': '这是一个很棒的工具'}
+    date_from, date_to = '2026-05-11', '2026-05-17'
+
+    html = render_html(repos, summaries, date_from, date_to)
+    assert 'owner/awesome' in html
+    assert '2,500' in html or '2500' in html
+    assert '这是一个很棒的工具' in html
+    assert 'https://github.com/owner/awesome' in html
+    assert '2026-05-11' in html
+
+
+def test_send_email_calls_smtp(monkeypatch):
+    """send_email 调用 SMTP 且不抛异常"""
+    from github_trending_weekly import send_email
+    calls = []
+
+    class FakeSMTP:
+        def __init__(self, host, port): calls.append(('init', host, port))
+        def __enter__(self): return self
+        def __exit__(self, *a): pass
+        def login(self, user, pw): calls.append(('login', user))
+        def sendmail(self, frm, to, msg): calls.append(('send', frm, to))
+
+    import smtplib
+    monkeypatch.setattr(smtplib, 'SMTP_SSL', FakeSMTP)
+
+    cfg = {
+        'smtp_host': 'smtp.test.com',
+        'smtp_port': 465,
+        'smtp_user': 'from@test.com',
+        'smtp_pass': 'pass',
+        'notify_to': ['to@test.com'],
+    }
+    send_email('<html>test</html>', 'Subject', cfg)
+    assert any(c[0] == 'send' for c in calls)
