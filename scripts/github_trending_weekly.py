@@ -50,7 +50,7 @@ def get_date_range(today=None):
     return last_monday.strftime('%Y-%m-%d'), last_sunday.strftime('%Y-%m-%d')
 
 
-def fetch_trending(date_from: str, github_token: str = '', top_n: int = 20) -> list[dict]:
+def fetch_trending(date_from: str, date_to: str = '', github_token: str = '', top_n: int = 20) -> list[dict]:
     """用 GitHub Search API 获取 date_from 之后 star 最多的仓库，返回标准化列表。"""
     url = 'https://api.github.com/search/repositories'
     headers = {'Accept': 'application/vnd.github+json'}
@@ -58,7 +58,7 @@ def fetch_trending(date_from: str, github_token: str = '', top_n: int = 20) -> l
         headers['Authorization'] = f'Bearer {github_token}'
 
     params = {
-        'q': f'pushed:>={date_from} stars:>50',
+        'q': f'pushed:{date_from}..{date_to} stars:>50',
         'sort': 'stars',
         'order': 'desc',
         'per_page': top_n,
@@ -90,6 +90,7 @@ def fetch_trending(date_from: str, github_token: str = '', top_n: int = 20) -> l
             log.error('GitHub API error: %s', e)
             if attempt == 2:
                 raise
+    log.error('GitHub rate limit exceeded after 3 attempts, aborting')
     return []
 
 
@@ -204,7 +205,7 @@ def main():
     date_from, date_to = get_date_range()
     log.info('抓取 %s ~ %s 的 trending 仓库...', date_from, date_to)
 
-    repos = fetch_trending(date_from, github_token=cfg['github_token'])
+    repos = fetch_trending(date_from, date_to=date_to, github_token=cfg['github_token'])
     if not repos:
         log.error('未获取到任何仓库，退出')
         sys.exit(1)

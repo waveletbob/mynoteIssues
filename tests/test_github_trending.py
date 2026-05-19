@@ -48,6 +48,12 @@ def test_get_date_range():
     assert start == '2026-05-11'
     assert end == '2026-05-17'
 
+    # Monday boundary: script runs on Monday, should return last week
+    today = date(2026, 5, 18)  # Monday
+    start, end = get_date_range(today)
+    assert start == '2026-05-11'
+    assert end == '2026-05-17'
+
 
 def test_fetch_trending_returns_list(monkeypatch):
     """fetch_trending 返回 list[dict]，每项含 name/description/stars/language/url"""
@@ -71,7 +77,7 @@ def test_fetch_trending_returns_list(monkeypatch):
 
     monkeypatch.setattr(requests, 'get', lambda *a, **kw: FakeResp())
 
-    repos = fetch_trending('2026-05-11', github_token='')
+    repos = fetch_trending('2026-05-11', date_to='2026-05-17', github_token='')
     assert len(repos) == 20
     assert repos[0]['name'] == 'owner/repo'
     assert repos[0]['stars'] == 1000
