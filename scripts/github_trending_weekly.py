@@ -3,6 +3,7 @@
 
 import os
 import sys
+import time
 import logging
 from datetime import datetime, timedelta, timezone
 
@@ -68,7 +69,7 @@ def fetch_trending(date_from: str, github_token: str = '', top_n: int = 20) -> l
             if resp.status_code in (403, 429):
                 wait = 2 ** attempt * 5
                 log.warning('GitHub rate limit, retry in %ds (attempt %d/3)', wait, attempt + 1)
-                import time; time.sleep(wait)
+                time.sleep(wait)
                 continue
             resp.raise_for_status()
             items = resp.json().get('items', [])
