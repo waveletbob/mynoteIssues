@@ -133,7 +133,7 @@ def summarize_repos(repos: list[dict], gemini_api_key: str) -> dict[str, str]:
 
     try:
         genai.configure(api_key=gemini_api_key)
-        model = genai.GenerativeModel('gemini-2.0-flash')
+        model = genai.GenerativeModel('gemini-2.5-flash-lite')
 
         items_text = '\n'.join(
             f'- {r["name"]}: {r["description"]} (topics: {", ".join(r["topics"])})'
