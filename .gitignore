@@ -2,3 +2,4 @@
 /build/
 /mynoteIssues.iml
 /test-vue/
+.env
