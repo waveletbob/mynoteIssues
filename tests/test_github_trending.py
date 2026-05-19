@@ -76,3 +76,52 @@ def test_fetch_trending_returns_list(monkeypatch):
     assert repos[0]['name'] == 'owner/repo'
     assert repos[0]['stars'] == 1000
     assert 'url' in repos[0]
+
+
+def test_summarize_repos_returns_dict(monkeypatch):
+    """summarize_repos 返回 {repo_name: summary_str} dict"""
+    from github_trending_weekly import summarize_repos
+
+    fake_repos = [
+        {'name': 'owner/alpha', 'description': 'Alpha project', 'topics': ['ai']},
+        {'name': 'owner/beta', 'description': 'Beta project', 'topics': []},
+    ]
+
+    fake_json_text = '[{"name":"owner/alpha","summary":"Alpha 是一个 AI 项目"},{"name":"owner/beta","summary":"Beta 是个工具"}]'
+
+    class FakePart:
+        text = fake_json_text
+
+    class FakeContent:
+        parts = [FakePart()]
+
+    class FakeCandidate:
+        content = FakeContent()
+
+    class FakeResponse:
+        candidates = [FakeCandidate()]
+
+    class FakeModel:
+        def generate_content(self, prompt): return FakeResponse()
+
+    import google.generativeai as genai
+    monkeypatch.setattr(genai, 'configure', lambda **kw: None)
+    monkeypatch.setattr(genai, 'GenerativeModel', lambda model: FakeModel())
+
+    result = summarize_repos(fake_repos, gemini_api_key='test-key')
+    assert result['owner/alpha'] == 'Alpha 是一个 AI 项目'
+    assert result['owner/beta'] == 'Beta 是个工具'
+
+
+def test_summarize_repos_fallback_on_error(monkeypatch):
+    """Gemini 失败时降级返回 description"""
+    from github_trending_weekly import summarize_repos
+
+    fake_repos = [{'name': 'owner/repo', 'description': 'Fallback desc', 'topics': []}]
+
+    import google.generativeai as genai
+    monkeypatch.setattr(genai, 'configure', lambda **kw: None)
+    monkeypatch.setattr(genai, 'GenerativeModel', lambda model: (_ for _ in ()).throw(Exception('API error')))
+
+    result = summarize_repos(fake_repos, gemini_api_key='test-key')
+    assert result['owner/repo'] == 'Fallback desc'

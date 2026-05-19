@@ -91,6 +91,46 @@ def fetch_trending(date_from: str, github_token: str = '', top_n: int = 20) -> l
     return []
 
 
+def summarize_repos(repos: list[dict], gemini_api_key: str) -> dict[str, str]:
+    """调用 Gemini Flash 批量生成中文摘要，返回 {repo_name: summary}。
+    失败时降级为 repo description。
+    """
+    import json
+    import google.generativeai as genai
+
+    fallback = {r['name']: r['description'] or r['name'] for r in repos}
+
+    try:
+        genai.configure(api_key=gemini_api_key)
+        model = genai.GenerativeModel('gemini-1.5-flash')
+
+        items_text = '\n'.join(
+            f'- {r["name"]}: {r["description"]} (topics: {", ".join(r["topics"])})'
+            for r in repos
+        )
+        prompt = f"""以下是 GitHub 上本周最热门的开源项目列表，请为每个项目生成一句简洁的中文摘要（20字以内），
+说明这个项目是做什么的。返回严格的 JSON 数组，格式: [{{"name":"owner/repo","summary":"摘要"}}]
+不要有任何额外文字，只返回 JSON。
+
+项目列表:
+{items_text}"""
+
+        response = model.generate_content(prompt)
+        raw = response.candidates[0].content.parts[0].text.strip()
+        # 去掉可能的 markdown 代码块
+        if raw.startswith('```'):
+            raw = raw.split('\n', 1)[1].rsplit('```', 1)[0].strip()
+
+        data = json.loads(raw)
+        result = {item['name']: item['summary'] for item in data}
+        log.info('Gemini 摘要生成完成，共 %d 项', len(result))
+        return result
+
+    except Exception as e:
+        log.warning('Gemini 摘要失败，降级使用 description: %s', e)
+        return fallback
+
+
 if __name__ == '__main__':
     cfg = load_config()
     log.info('Config loaded. SMTP=%s, recipients=%s', cfg['smtp_host'], cfg['notify_to'])
