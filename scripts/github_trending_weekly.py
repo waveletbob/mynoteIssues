@@ -36,6 +36,7 @@ def load_config() -> dict:
         'smtp_user': os.getenv('SMTP_USER'),
         'smtp_pass': os.getenv('SMTP_PASS'),
         'notify_to': [e.strip() for e in os.getenv('NOTIFY_TO', '').split(',') if e.strip()],
+        'serverchan_key': os.getenv('SERVERCHAN_KEY', ''),
     }
 
 
@@ -210,6 +211,33 @@ def render_html(repos: list[dict], summaries: dict[str, str], date_from: str, da
 </html>"""
 
 
+def send_wechat(repos: list[dict], summaries: dict[str, str], date_from: str, date_to: str, sendkey: str) -> None:
+    """通过 Server酱推送微信通知。sendkey 为空则跳过。"""
+    if not sendkey:
+        return
+
+    lines = [f'## 🔥 GitHub Trending ({date_from} ~ {date_to})\n']
+    for i, repo in enumerate(repos[:10], 1):
+        summary = summaries.get(repo['name'], repo['description'] or '')
+        week = repo.get('week_stars', 0)
+        lines.append(
+            f"**{i}. [{repo['name']}](https://github.com/{repo['name']})**  "
+            f"`{repo['language']}` ⭐本周+{week:,}  \n{summary}\n"
+        )
+
+    desp = '\n'.join(lines)
+    url = f'https://sctapi.ftqq.com/{sendkey}.send'
+    try:
+        resp = requests.post(url, data={
+            'title': f'GitHub Trending {date_from}',
+            'desp': desp,
+        }, timeout=10)
+        resp.raise_for_status()
+        log.info('微信推送成功')
+    except Exception as e:
+        log.warning('微信推送失败: %s', e)
+
+
 def send_email(html_body: str, subject: str, cfg: dict) -> None:
     """通过 SMTP SSL 发送 HTML 邮件。失败则抛出异常（由调用方处理）。"""
     import smtplib
@@ -250,6 +278,8 @@ def main():
     except Exception as e:
         log.error('邮件发送失败: %s', e)
         sys.exit(1)
+
+    send_wechat(repos, summaries, date_from, date_to, cfg.get('serverchan_key', ''))
 
     log.info('完成')
 

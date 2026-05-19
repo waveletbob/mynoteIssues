@@ -184,3 +184,26 @@ def test_send_email_calls_smtp(monkeypatch):
     }
     send_email('<html>test</html>', 'Subject', cfg)
     assert any(c[0] == 'send' for c in calls)
+
+
+def test_send_wechat_skips_when_no_key():
+    """sendkey 为空时跳过，不抛异常"""
+    from github_trending_weekly import send_wechat
+    send_wechat([], {}, '2026-05-11', '2026-05-17', '')
+
+
+def test_send_wechat_posts_to_serverchan(monkeypatch):
+    """sendkey 存在时 POST 到 Server酱"""
+    import requests
+    from github_trending_weekly import send_wechat
+    calls = []
+
+    class FakeResp:
+        def raise_for_status(self): pass
+
+    monkeypatch.setattr(requests, 'post', lambda url, **kw: calls.append(url) or FakeResp())
+
+    repos = [{'name': 'owner/repo', 'language': 'Python', 'week_stars': 100, 'description': 'test'}]
+    send_wechat(repos, {}, '2026-05-11', '2026-05-17', 'testkey123')
+    assert len(calls) == 1
+    assert 'testkey123' in calls[0]
