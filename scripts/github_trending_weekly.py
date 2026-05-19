@@ -7,6 +7,8 @@ import time
 import logging
 from datetime import datetime, timedelta, timezone
 
+from html import escape
+
 import requests
 from dotenv import load_dotenv
 
@@ -141,11 +143,11 @@ def render_html(repos: list[dict], summaries: dict[str, str], date_from: str, da
         <tr>
           <td style="text-align:center;padding:8px 12px;border-bottom:1px solid #eee;">{i}</td>
           <td style="padding:8px 12px;border-bottom:1px solid #eee;">
-            <a href="{repo['url']}" style="color:#0366d6;text-decoration:none;font-weight:600;">{repo['name']}</a>
+            <a href="{escape(repo['url'])}" style="color:#0366d6;text-decoration:none;font-weight:600;">{escape(repo['name'])}</a>
           </td>
-          <td style="padding:8px 12px;border-bottom:1px solid #eee;">{repo['language']}</td>
+          <td style="padding:8px 12px;border-bottom:1px solid #eee;">{escape(repo['language'])}</td>
           <td style="text-align:right;padding:8px 12px;border-bottom:1px solid #eee;">⭐ {stars_fmt}</td>
-          <td style="padding:8px 12px;border-bottom:1px solid #eee;">{summary}</td>
+          <td style="padding:8px 12px;border-bottom:1px solid #eee;">{escape(summary)}</td>
         </tr>"""
 
     return f"""<!DOCTYPE html>
