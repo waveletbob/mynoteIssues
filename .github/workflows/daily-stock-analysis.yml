@@ -168,7 +168,9 @@ jobs:
           REPORT_LANGUAGE: ${{ vars.REPORT_LANGUAGE || '' }}
           REPORT_SHOW_LLM_MODEL: ${{ vars.REPORT_SHOW_LLM_MODEL || 'true' }}
           SINGLE_STOCK_NOTIFY: ${{ vars.SINGLE_STOCK_NOTIFY || 'false' }}
-          MARKET_REVIEW_ENABLED: ${{ vars.MARKET_REVIEW_ENABLED || 'true' }}
+          # 大盘复盘默认关闭：GitHub Actions 海外 runner 访问东财/新浪指数接口易卡死（akshare 无超时）。
+          # 想恢复大盘复盘：建 Variable MARKET_REVIEW_ENABLED=true 覆盖（建议配合国内 self-hosted runner）。
+          MARKET_REVIEW_ENABLED: ${{ vars.MARKET_REVIEW_ENABLED || 'false' }}
           ANALYSIS_DELAY: ${{ vars.ANALYSIS_DELAY || '0' }}
           TRADING_DAY_CHECK_ENABLED: ${{ vars.TRADING_DAY_CHECK_ENABLED || 'true' }}
 
